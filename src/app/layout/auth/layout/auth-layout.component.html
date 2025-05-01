@@ -1,0 +1,27 @@
+<div class="carousel-container">
+  <div class="brand-header">
+    <img src="logo.svg" alt="ALEDAN" class="brand-logo">
+    <span class="brand-name">ALEDAN</span>
+  </div>
+
+  <div class="auth-form">
+    <mat-card class="auth-card">
+      <div class="card-header">
+        <h2>Generador de Horarios</h2>
+        <p>Optimización inteligente de recursos académicos</p>
+      </div>
+      <mat-card-content>
+        <router-outlet></router-outlet>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  
+  <div class="carousel">
+    <div class="image-container">
+      <img [src]="backgroundImages[currentIndex]" 
+           alt="Background" 
+           class="carousel-image"
+           [class.fade-in]="true">
+    </div>
+  </div>
+</div>

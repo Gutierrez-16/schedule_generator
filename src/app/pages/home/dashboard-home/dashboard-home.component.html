@@ -1,0 +1,62 @@
+<div class="dashboard-container">
+  <!-- Header -->
+  <header class="dashboard-header">
+    <h1>Dashboard</h1>
+    <div class="date-display">
+      <mat-icon>today</mat-icon>
+      <span>{{ currentDate | date:'d MMM, yyyy' }}</span>
+    </div>
+  </header>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let stat of mainStats">
+      <mat-icon>{{stat.icon}}</mat-icon>
+      <div>
+        <h3>{{stat.value}}</h3>
+        <p>{{stat.label}}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart & Table -->
+  <div class="main-grid">
+    <div class="chart-card">
+      <h2>Actividad Semanal</h2>
+      <div class="chart">
+        <div class="chart-bars">
+          <div class="chart-bar" *ngFor="let day of weekActivity" 
+               [style.height]="day.value + '%'"
+               [attr.data-label]="day.label">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="table-card">
+      <h2>Usuarios Recientes</h2>
+      <table mat-table [dataSource]="users">
+        <ng-container matColumnDef="avatar">
+          <td mat-cell *matCellDef="let user">
+            <div class="user-avatar">{{user.name.charAt(0)}}</div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <td mat-cell *matCellDef="let user">{{user.name}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <td mat-cell *matCellDef="let user">
+            <span class="role-badge">{{user.role}}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <td mat-cell *matCellDef="let user">{{user.date}}</td>
+        </ng-container>
+
+        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+      </table>
+    </div>
+  </div>
+</div>

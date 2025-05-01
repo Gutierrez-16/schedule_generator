@@ -1,0 +1,17 @@
+<div class="layout-container">
+    <app-navbar 
+      (toggleSidebar)="toggleSidebar()"
+      [companyData]="companyData"
+      [userMenuData]="userMenuData">
+    </app-navbar>
+    
+    <div class="overlay" [class.active]="!sidebarCollapsed && isMobile" 
+         (click)="toggleSidebar()"></div>
+
+    <div class="content-container" (click)="handleContentClick($event)">
+        <app-sidebar [isCollapsed]="sidebarCollapsed"></app-sidebar>
+        <main class="main-content" [class.sidebar-collapsed]="sidebarCollapsed">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>

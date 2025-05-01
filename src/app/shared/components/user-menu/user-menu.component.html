@@ -1,0 +1,24 @@
+<button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-menu-trigger">
+  <app-user-avatar [imageUrl]="data.photoUrl" [username]="data.username" [size]="40"></app-user-avatar>
+</button>
+
+<mat-menu #userMenu="matMenu" class="user-menu-panel">
+  <div class="menu-header">
+    <app-user-avatar [imageUrl]="data.photoUrl" [username]="data.username" [size]="48"></app-user-avatar>
+    <div class="header-info">
+      <span class="header-name">{{ data.username }}</span>
+      <span class="header-email">{{ data.email }}</span>
+    </div>
+  </div>
+  
+  <mat-divider></mat-divider>
+  
+  <ng-container *ngFor="let item of data.menuItems">
+    <button mat-menu-item 
+            [routerLink]="item.route" 
+            (click)="item.action && item.action()">
+      <mat-icon>{{ item.icon }}</mat-icon>
+      <span>{{ item.label }}</span>
+    </button>
+  </ng-container>
+</mat-menu>

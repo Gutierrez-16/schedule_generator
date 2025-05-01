@@ -1,0 +1,4 @@
+<div class="avatar" [ngStyle]="styles">
+  <img *ngIf="imageUrl" [src]="imageUrl" [alt]="username" class="avatar-image">
+  <span *ngIf="!imageUrl" class="avatar-initial">{{initial}}</span>
+</div>

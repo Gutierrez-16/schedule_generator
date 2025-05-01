@@ -1,0 +1,21 @@
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+}
+
+.theme-toggle mat-icon {
+  margin: 0;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover mat-icon {
+  transform: rotate(30deg);
+}
