@@ -1,0 +1,126 @@
+.config-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.config-title {
+  font-size: 1.75rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+}
+
+.config-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.logo-section {
+  text-align: center;
+  position: sticky;
+  top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  height: fit-content;
+}
+
+.logo-preview {
+  width: 300px;
+  height: 300px;
+  border-radius: 8px;
+  border: 2px dashed var(--border-color);
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.upload-overlay, .edit-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(var(--primary-color-rgb), 0.1);
+  color: var(--primary-color);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.logo-preview:hover .upload-overlay,
+.logo-preview:hover .edit-overlay {
+  opacity: 1;
+  background: rgba(var(--primary-color-rgb), 0.15);
+}
+
+.upload-icon, .edit-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: var(--primary-color);
+}
+
+.logo-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  text-align: center;
+  display: block;
+}
+
+.form-section {
+  background: transparent;
+  padding: 1rem 0;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.save-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 24px;
+}
+
+.save-button .button-icon {
+  color: white !important;
+}
+
+.button-icon {
+  margin-right: 4px;
+}
+
+@media (max-width: 1024px) {
+  .config-layout {
+    grid-template-columns: 1fr;
+  }
+}

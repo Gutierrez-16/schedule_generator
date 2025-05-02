@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#00E5FF"/>
+      <stop offset="0.5" stop-color="#2196F3"/>
+      <stop offset="1" stop-color="#9C27B0"/>
+    </linearGradient>
+    <filter id="neonGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="15" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <pattern id="techPattern" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M0,10 L20,10 M10,0 L10,20" stroke="url(#mainGradient)" stroke-width="0.5" opacity="0.2"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="800" fill="none"/>
+  <g transform="matrix(1.998623, 0, 0, 1.946855, -453.804023, -378.741857)" style="">
+    <g filter="url(#neonGlow)">
+      <path d="M250,200 L400,200 C550,200 600,280 600,380 C600,500 530,600 400,600 L250,600 L350,400 Z" fill="url(#mainGradient)"/>
+      <path d="M320,280 L400,280 C480,280 520,320 520,380 C520,450 480,520 400,520 L320,520 L390,400 Z" fill="#FFFFFF" fill-opacity="0.15"/>
+      <path d="M300,400 L500,400" stroke="#FFFFFF" stroke-width="18" stroke-opacity="0.9"/>
+      <path d="M250,200 L400,200 C550,200 600,280 600,380 C600,500 530,600 400,600 L250,600 L350,400 Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-opacity="0.5"/>
+    </g>
+    <g opacity="0.7">
+      <path d="M250,330 L300,330" stroke="url(#mainGradient)" stroke-width="2" stroke-dasharray="3,6">
+        <animate attributeName="stroke-dashoffset" from="0" to="9" dur="1.5s" repeatCount="indefinite"/>
+      </path>
+      <path d="M250,470 L300,470" stroke="url(#mainGradient)" stroke-width="2" stroke-dasharray="3,6">
+        <animate attributeName="stroke-dashoffset" from="0" to="9" dur="1.5s" repeatCount="indefinite"/>
+      </path>
+      <path d="M450,240 L550,240" stroke="url(#mainGradient)" stroke-width="2" stroke-opacity="0.6"/>
+      <path d="M450,560 L550,560" stroke="url(#mainGradient)" stroke-width="2" stroke-opacity="0.6"/>
+      <path d="M570,320 L570,480" stroke="url(#mainGradient)" stroke-width="2" stroke-opacity="0.6"/>
+      <circle cx="250" cy="200" r="5" fill="url(#mainGradient)">
+        <animate attributeName="opacity" values="1;0.4;1" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="250" cy="600" r="5" fill="url(#mainGradient)">
+        <animate attributeName="opacity" values="1;0.4;1" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="600" cy="380" r="5" fill="url(#mainGradient)">
+        <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <path d="M250,200 L400,200 C550,200 600,280 600,380 C600,500 530,600 400,600 L250,600 L350,400 Z" fill="url(#techPattern)" fill-opacity="0.1"/>
+  </g>
+</svg>

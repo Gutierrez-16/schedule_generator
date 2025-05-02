@@ -27,6 +27,7 @@ export class ResetPasswordComponent implements OnInit {
   isLoading = false;
   hidePassword = true;
   hideConfirmPassword = true;
+  isResending = false;
 
   ngOnInit() {
     const email = history.state?.email;
@@ -57,5 +58,23 @@ export class ResetPasswordComponent implements OnInit {
         this.router.navigate(['/auth/login']);
       }, 1000);
     }
+  }
+
+  resendCode() {
+    if (this.isResending) return;
+    
+    const email = this.resetForm.get('email')?.value;
+    this.isResending = true;
+
+    // Simular llamada a API
+    setTimeout(() => {
+      this.snackBar.open('Código enviado correctamente', 'OK', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: ['success-snackbar']
+      });
+      this.isResending = false;
+    }, 1500);
   }
 }

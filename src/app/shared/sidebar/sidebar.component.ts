@@ -19,22 +19,46 @@ import { NavigationService } from '../../core/navigation/navigation.service';
 export class SidebarComponent {
   @Input() @HostBinding('class.collapsed') isCollapsed = false;
   menuItems: MenuItem[] = [];
+  expandedItems: Set<string> = new Set();
   
-  constructor(
-    private navigationService: NavigationService,
-    private router: Router
-  ) {
+  constructor(private navigationService: NavigationService, private router: Router) {
     this.menuItems = this.navigationService.getNavigationItems();
+  }
+
+  ngOnInit() {
+    this.checkActiveRoutes();
+    this.router.events.subscribe(() => {
+      this.checkActiveRoutes();
+    });
+  }
+
+  private checkActiveRoutes() {
+    const currentUrl = this.router.url;
+    this.menuItems.forEach(item => {
+      if (item.children) {
+        const hasActiveChild = item.children.some(child => 
+          currentUrl.includes(child.route || '')
+        );
+        if (hasActiveChild) {
+          item.expanded = true;
+          this.expandedItems.add(item.title);
+        }
+      }
+    });
   }
   
   toggleSubMenu(item: MenuItem): void {
-    // Solo toggle el submenu actual sin cerrar los otros
     item.expanded = !item.expanded;
+    if (item.expanded) {
+      this.expandedItems.add(item.title);
+    } else {
+      this.expandedItems.delete(item.title);
+    }
   }
 
   isMenuActive(item: MenuItem): boolean {
     if (!item.children) return false;
-    return item.children.some(child => 
-      this.router.isActive(child.route || '', true));
+    const currentUrl = this.router.url;
+    return item.children.some(child => currentUrl.includes(child.route || ''));
   }
 }

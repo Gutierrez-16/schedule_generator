@@ -10,6 +10,11 @@ export const DASHBOARD_ROUTES: Routes = [
         path: '',
         loadComponent: () => import('../../pages/home/dashboard-home/dashboard-home.component')
           .then(m => m.DashboardHomeComponent)
+      },
+      {
+        path: 'configuration',
+        loadComponent: () => import('../../features/configuration/configuration.component')
+          .then(m => m.ConfigurationComponent)
       }
     ]
   }

@@ -9,7 +9,7 @@ export class NavigationService {
     {
       title: 'Dashboard',
       icon: 'home',
-      route: '/dashboard'
+      route: '/'
     },
     {
       title: 'Gestión de Horarios',
@@ -51,7 +51,19 @@ export class NavigationService {
     {
       title: 'Configuración',
       icon: 'settings',
-      route: '/dashboard/settings'
+      children: [
+        {
+          title: 'Institución',
+          icon: 'domain',
+          route: '/configuration'
+        },
+        {
+          title: 'Usuarios',
+          icon: 'people_outline',
+          route: '/dashboard/configuration/users'
+        }
+      ]
+        
     }
   ];
 

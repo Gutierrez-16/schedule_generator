@@ -1,0 +1,106 @@
+<div class="config-container">
+  <h1 class="config-title">Configuración de la Institución</h1>
+  
+  <div class="config-layout">
+    <div class="logo-section">
+      <div class="logo-preview" (click)="onLogoClick()">
+        <!-- Logo preview or default icon -->
+        <ng-container *ngIf="logoPreview; else defaultLogo">
+          <img [src]="logoPreview" alt="Logo" class="preview-image">
+          <div class="edit-overlay">
+            <mat-icon>edit</mat-icon>
+          </div>
+        </ng-container>
+        
+        <ng-template #defaultLogo>
+          <div class="upload-overlay">
+            <mat-icon class="upload-icon">image</mat-icon>
+            <span>Subir logo</span>
+          </div>
+        </ng-template>
+
+        <input #fileInput type="file" hidden (change)="onLogoSelected($event)" accept="image/*">
+      </div>
+    </div>
+
+    <div class="form-section">
+      <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <mat-form-field>
+            <mat-label>RUC</mat-label>
+            <input matInput 
+                   formControlName="ruc" 
+                   maxlength="11"
+                   (keydown)="onlyNumbers($event)"
+                   placeholder="Ingrese RUC"
+                   #rucInput>
+            <mat-hint align="end">{{rucInput.value.length || 0}}/11</mat-hint>
+            <mat-error *ngIf="configForm.get('ruc')?.hasError('required')">
+              El RUC es requerido
+            </mat-error>
+            <mat-error *ngIf="configForm.get('ruc')?.hasError('pattern')">
+              El RUC debe tener 11 dígitos
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Nombre de la Institución</mat-label>
+            <input matInput formControlName="name" placeholder="Ej: Universidad Nacional">
+            <mat-error *ngIf="configForm.get('name')?.hasError('required')">
+              El nombre es requerido
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Razón Social</mat-label>
+            <input matInput formControlName="businessName">
+            <mat-error *ngIf="configForm.get('businessName')?.hasError('required')">
+              La razón social es requerida
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Dirección del Campus</mat-label>
+            <input matInput formControlName="address">
+            <mat-error *ngIf="configForm.get('address')?.hasError('required')">
+              La dirección es requerida
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="phone">
+            <mat-error *ngIf="configForm.get('phone')?.hasError('required')">
+              El teléfono es requerido
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Email Institucional</mat-label>
+            <input matInput formControlName="email">
+            <mat-error *ngIf="configForm.get('email')?.hasError('required')">
+              El email es requerido
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="fill">
+            <mat-label>Descripción Institucional</mat-label>
+            <textarea matInput formControlName="concept" rows="3"></textarea>
+            <mat-error *ngIf="configForm.get('concept')?.hasError('required')">
+              La descripción es requerida
+            </mat-error>
+          </mat-form-field>
+        </div>
+        
+        <div class="form-actions">
+          <button mat-flat-button color="primary" type="submit" 
+                  [disabled]="!configForm.valid || isLoading"
+                  class="save-button">
+            <mat-icon class="button-icon">{{isLoading ? 'sync' : 'save'}}</mat-icon>
+            <span>{{isLoading ? 'Guardando...' : (isNewConfig ? 'Guardar' : 'Actualizar')}}</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

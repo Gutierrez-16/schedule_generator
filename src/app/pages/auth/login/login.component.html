@@ -1,7 +1,7 @@
 <div class="login-container">
   <h1>Iniciar Sesión</h1>
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="fill">
       <mat-label>Email o Usuario</mat-label>
       <input matInput formControlName="username" type="text">
       <mat-icon matPrefix>person</mat-icon>
@@ -10,7 +10,7 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="fill">
       <mat-label>Contraseña</mat-label>
       <input matInput [type]="hidePassword ? 'password' : 'text'" 
              formControlName="password">
