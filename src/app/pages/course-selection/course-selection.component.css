@@ -18,3 +18,33 @@
 mat-divider {
   margin: 0 24px;
 }
+
+@media (max-width: 1024px) {
+  .selection-container {
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .right-panel {
+    min-width: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .selection-container {
+    flex-direction: column;
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .left-panel,
+  .right-panel {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+  }
+
+  mat-divider {
+    display: none;
+  }
+}
