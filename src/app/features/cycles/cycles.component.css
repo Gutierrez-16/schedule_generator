@@ -1,0 +1,288 @@
+.search-field {
+  width: 100%;
+  color: var(--text-primary) !important;
+  margin-bottom: 1.5rem;
+}
+
+::ng-deep .search-field .mat-mdc-text-field-wrapper {
+  background-color: var(--card-background) !important;
+}
+
+::ng-deep .search-field .mat-mdc-form-field-focus-overlay {
+  background-color: var(--hover-color);
+}
+
+::ng-deep .search-field .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: transparent;
+}
+
+::ng-deep .search-field .mat-mdc-form-field-input-control {
+  color: var(--text-primary) !important;
+}
+
+::ng-deep .search-field .mat-mdc-form-field-icon-prefix {
+  color: var(--text-secondary) !important;
+}
+
+.cycle-title {
+  color: #1a73e8;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #1a73e8;
+}
+
+.course-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 8px;
+  background: var(--card-background);
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.course-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.course-name {
+  flex-grow: 1;
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: var(--font-md);
+  letter-spacing: var(--letter-spacing-sm);
+  font-weight: 500;
+}
+
+.courses-accordion {
+  margin-top: 8px;
+}
+
+.course-panel {
+  margin-bottom: 12px;
+  background: var(--card-background) !important;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  border: none;
+  overflow: hidden;
+  transition: var(--transition-normal);
+}
+
+.course-panel:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.groups-container {
+  padding: 8px 0;
+}
+
+.group-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  transition: var(--transition-fast);
+  background-color: var(--card-background);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.group-item:last-child {
+  border-bottom: none;
+}
+
+.group-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.group-number {
+  color: var(--primary-color);
+  font-weight: 500;
+  min-width: 70px;
+  font-size: var(--font-sm);
+  letter-spacing: var(--letter-spacing-sm);
+}
+
+.group-teacher {
+  color: var(--text-secondary);
+  font-size: var(--font-xs);
+  letter-spacing: var(--letter-spacing-md);
+}
+
+.group-classroom {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: var(--font-xs);
+  letter-spacing: var(--letter-spacing-md);
+}
+
+.group-name {
+  font-weight: 500;
+}
+
+mat-expansion-panel-header {
+  height: auto !important;
+  padding: 12px 24px !important;
+}
+
+.credits-badge {
+  background: var(--gradient-primary);
+  color: white !important;
+  padding: 4px 16px;
+  border-radius: 20px;
+  font-size: var(--font-xs);
+  letter-spacing: var(--letter-spacing-md);
+  font-weight: 500;
+  box-shadow: var(--shadow-sm);
+}
+
+.group-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.schedule-info {
+  padding: 16px;
+}
+
+.schedule-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.schedule-row mat-icon {
+  color: white !important;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.group-panel {
+  margin: 8px 0;
+}
+
+.group-id {
+  font-weight: 500;
+}
+
+.groups-list {
+  padding: 8px 16px;
+}
+
+.group-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-bottom: 1px solid #e0e0e0;
+  gap: 16px;
+}
+
+.group-row:last-child {
+  border-bottom: none;
+}
+
+.group-number {
+  min-width: 50px;
+  font-weight: 500;
+  color: var(--primary-color);
+  font-size: var(--font-sm);
+  letter-spacing: var(--letter-spacing-sm);
+}
+
+.group-teacher {
+  flex-grow: 1;
+  color: var(--text-secondary);
+  font-size: var(--font-xs);
+  letter-spacing: var(--letter-spacing-md);
+}
+
+.group-classroom {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: var(--font-xs);
+  letter-spacing: var(--letter-spacing-md);
+}
+
+.group-row:hover {
+  background: #f5f5f5;
+}
+
+.group-item:hover {
+  background-color: var(--hover-color);
+  transform: scale(1.01);
+}
+
+mat-expansion-panel {
+  background-color: var(--card-background) !important;
+  color: var(--text-primary) !important;
+}
+
+::ng-deep .mat-form-field-outline {
+  color: var(--text-secondary) !important;
+}
+
+::ng-deep .mat-form-field-label {
+  color: var(--text-secondary) !important;
+}
+
+/* Fix tab styles */
+::ng-deep .mat-mdc-tab-label-content {
+  color: var(--text-primary) !important;
+}
+
+::ng-deep .mat-mdc-tab-group {
+  --mdc-tab-indicator-active-indicator-color: var(--primary-color);
+}
+
+::ng-deep
+  .mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active
+  .mat-mdc-tab-label-content {
+  color: var(--primary-color) !important;
+}
+
+::ng-deep .mdc-tab__text-label {
+  color: var(--text-primary) !important;
+}
+
+.delete-course-btn {
+  color: var(--error-color) !important;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.delete-course-btn:hover {
+  background-color: var(--error-hover-color);
+  transform: scale(1.1);
+}
+
+.delete-course-btn mat-icon {
+  color: var(--error-color) !important;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.cycles-container {
+  padding: 1.5rem;
+  overflow-x: auto;
+  background-color: var(--background-primary);
+}

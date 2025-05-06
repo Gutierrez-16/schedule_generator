@@ -1,0 +1,43 @@
+<div class="details-container">
+  <div class="credits-summary">
+    <div class="credits-header">
+      <div class="credits-info">
+        <h2>Créditos</h2>
+        <div
+          class="credits-count"
+          [class.credits-warning]="totalCredits > maxCredits"
+        >
+          <span class="credits-number">{{ totalCredits }}</span>
+          <span class="credits-max">/ {{ maxCredits }}</span>
+        </div>
+      </div>
+      <button
+        mat-button
+        class="enroll-button"
+        [disabled]="totalCredits > maxCredits || totalCredits === 0"
+        (click)="enrollCourses()"
+      >
+        <mat-icon>school</mat-icon>
+        Cursos a Llevar
+      </button>
+    </div>
+  </div>
+
+  <div class="selected-courses">
+    <div class="courses-list">
+      <div *ngFor="let course of selectedCourses" class="course-header">
+        <span class="course-name">{{ course.name }}</span>
+        <div style="display: flex; align-items: center; gap: 8px">
+          <mat-chip>{{ course.credits }} cr.</mat-chip>
+          <button
+            mat-icon-button
+            class="delete-course-btn"
+            (click)="removeCourse(course)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

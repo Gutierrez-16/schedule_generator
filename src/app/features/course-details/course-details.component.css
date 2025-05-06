@@ -1,0 +1,144 @@
+.details-container {
+  padding: 1rem;
+  background-color: var(--background-primary);
+  border-radius: 8px;
+}
+
+.credits-summary {
+  background: var(--card-background);
+  border-radius: var(--border-radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2rem;
+}
+
+.credits-summary mat-card {
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.credits-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.credits-info h2 {
+  margin: 0;
+  font-size: var(--font-lg);
+  letter-spacing: var(--letter-spacing-md);
+  color: var(--text-secondary);
+  font-weight: 400;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.credits-count {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.credits-number {
+  font-size: 3rem;
+  font-weight: 600;
+  background: var(--gradient-primary);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.credits-max {
+  font-size: var(--font-lg);
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.credits-warning .credits-number {
+  background: var(--error-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.courses-list {
+  margin-bottom: 16px;
+}
+
+.courses-list .course-header {
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.2s;
+}
+
+.delete-course-btn {
+  color: var(--error-color) !important;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.delete-course-btn:hover {
+  background-color: var(--error-hover-color);
+  transform: scale(1.1);
+}
+
+.delete-course-btn mat-icon {
+  color: #f44336 !important;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.course-card {
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.course-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.enroll-button {
+  background: linear-gradient(45deg, #7b1fa2, #9c27b0);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  color: white !important;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.enroll-button:hover:not([disabled]) {
+  background: linear-gradient(45deg, #9c27b0, #7b1fa2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.enroll-button[disabled] {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.enroll-button mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: white !important;
+}

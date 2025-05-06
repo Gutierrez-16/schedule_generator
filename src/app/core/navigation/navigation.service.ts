@@ -12,20 +12,9 @@ export class NavigationService {
       route: '/'
     },
     {
-      title: 'Gestión de Horarios',
+      title: 'Generación de Horarios',
       icon: 'schedule',
-      children: [
-        {
-          title: 'Lista de Horarios',
-          icon: 'view_list',
-          route: '/dashboard/schedules/list'
-        },
-        {
-          title: 'Nuevo Horario',
-          icon: 'add_circle',
-          route: '/dashboard/schedules/create'
-        }
-      ]
+      route: '/schedule-manager'
     },
     {
       title: 'Gestión de Personal',

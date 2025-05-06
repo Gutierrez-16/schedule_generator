@@ -1,0 +1,16 @@
+<div class="export-container">
+  <button mat-raised-button [matMenuTriggerFor]="menu" class="export-button">
+    <mat-icon>download</mat-icon>
+    Exportar
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="exportAsPDF()">
+      <mat-icon class="pdf-icon">picture_as_pdf</mat-icon>
+      <span>Exportar PDF</span>
+    </button>
+    <button mat-menu-item (click)="exportAsImage()">
+      <mat-icon class="image-icon">image</mat-icon>
+      <span>Exportar Imagen</span>
+    </button>
+  </mat-menu>
+</div>

@@ -1,0 +1,123 @@
+.schedule-container {
+  padding: 1rem;
+  overflow-x: auto;
+  background-color: var(--background-primary);
+}
+
+.export-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card-background);
+
+  th {
+    background: var(--card-background);
+    font-weight: 500;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+  }
+
+  .time-cell {
+    width: 80px;
+    background: var(--card-background);
+    font-weight: 400;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    padding: 6px;
+    color: var(--text-secondary);
+  }
+}
+
+.schedule-cell {
+  min-width: 140px;
+  height: 70px;
+  vertical-align: top;
+  border: 1px solid var(--border-color);
+  background: var(--card-background);
+  transition: all 0.2s ease;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: inherit;
+    opacity: 0.8;
+  }
+}
+
+.has-class {
+  background: var(--card-background);
+}
+
+.class-info {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 8px;
+}
+
+.subject {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 0.9em;
+}
+
+.time-range {
+  font-size: 0.75em;
+  color: var(--text-secondary);
+}
+
+.professor,
+.classroom {
+  font-size: 0.8em;
+  color: var(--text-secondary);
+}
+
+.hidden-cell {
+  display: none;
+}
+
+.actions-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  height: 36px;
+  border-radius: 4px;
+  font-weight: 500;
+  color: var(--text-primary) !important;
+}
+
+.generate-button {
+  background: linear-gradient(45deg, #7b1fa2, #9c27b0);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  color: white !important;
+  transition: all 0.3s ease;
+}
+
+.generate-button mat-icon {
+  color: white !important;
+}

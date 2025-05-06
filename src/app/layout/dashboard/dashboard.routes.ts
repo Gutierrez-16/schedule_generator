@@ -15,7 +15,12 @@ export const DASHBOARD_ROUTES: Routes = [
         path: 'configuration',
         loadComponent: () => import('../../features/configuration/configuration.component')
           .then(m => m.ConfigurationComponent)
-      }
+      },
+      {
+        path: 'schedule-manager',
+        loadComponent: () => import('../../pages/schedule-manager/schedule-manager.component')
+          .then(m => m.ScheduleManagerComponent)
+      },
     ]
   }
 ];

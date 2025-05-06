@@ -1,0 +1,13 @@
+<div class="selection-container">
+  <div class="left-panel">
+    <app-cycles
+      #cyclesComponent
+      (selectedCoursesChange)="onSelectedCoursesChange($event)"
+    ></app-cycles>
+  </div>
+  <div class="right-panel">
+    <app-course-details
+      (courseRemoved)="onCourseRemoved($event)"
+    ></app-course-details>
+  </div>
+</div>
