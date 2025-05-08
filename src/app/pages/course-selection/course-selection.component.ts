@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CyclesComponent } from '../../features/cycles/cycles.component';
 import { CourseDetailsComponent } from '../../features/course-details/course-details.component';
 import { MatDividerModule } from '@angular/material/divider';
-import { Course } from '../../features/cycles/interfaces/cycle.interface';
+import { Course } from 'features/schedule/interfaces/schedule.interface';
 
 @Component({
   selector: 'app-course-selection',

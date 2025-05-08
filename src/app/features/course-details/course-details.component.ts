@@ -1,11 +1,13 @@
-import { Component, inject, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Course } from '../cycles/interfaces/cycle.interface';
+import { Course } from 'features/schedule/interfaces/schedule.interface';
+import { ScheduleRequest } from 'src/app/core/interfaces/ScheduleRequest';
+import { SchedulesService } from 'src/app/core/services/schedules.service';
 
 @Component({
   selector: 'app-course-details',
@@ -22,10 +24,16 @@ import { Course } from '../cycles/interfaces/cycle.interface';
 })
 export class CourseDetailsComponent {
   private snackBar = inject(MatSnackBar);
+  private schedulesService = inject(SchedulesService);
+
   @Output() courseRemoved = new EventEmitter<number>();
+
   maxCredits = 21;
   selectedCourses: Course[] = [];
   totalCredits = 0;
+
+  // ID de usuario estático por ahora (puede venir de AuthService en el futuro)
+  userId = 1;
 
   updateSelectedCourses(courses: Course[]) {
     this.selectedCourses = courses;
@@ -37,9 +45,9 @@ export class CourseDetailsComponent {
   }
 
   removeCourse(course: Course) {
-    this.selectedCourses = this.selectedCourses.filter(c => c.id !== course.id);
+    this.selectedCourses = this.selectedCourses.filter(c => c.courseId !== course.courseId);
     this.totalCredits = this.selectedCourses.reduce((sum, c) => sum + c.credits, 0);
-    this.courseRemoved.emit(course.id);
+    this.courseRemoved.emit(course.courseId);
   }
 
   enrollCourses() {
@@ -51,9 +59,29 @@ export class CourseDetailsComponent {
       return;
     }
 
-    this.snackBar.open('Cursos agregados correctamente', 'OK', {
-      duration: 3000,
-      panelClass: ['success-snackbar']
+const request: ScheduleRequest = {
+  userId: this.userId,
+  courseIds: this.selectedCourses.map(course => course.courseId)
+};
+
+
+console.log('Enviando solicitud de horario:', request);
+
+    this.schedulesService.saveSchedule(request).subscribe({
+
+      next: () => {
+        this.snackBar.open('Cursos agregados correctamente', 'OK', {
+          duration: 3000,
+          panelClass: ['success-snackbar']
+        });
+      },
+      error: (err) => {
+        console.error('Error al guardar horario:', err);
+        this.snackBar.open('Error al guardar los cursos', 'OK', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
+      }
     });
   }
 }

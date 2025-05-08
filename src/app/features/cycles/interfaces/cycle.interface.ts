@@ -1,22 +1,11 @@
-export interface Group {
-  id: number;
-  group: string;
-  fullName: string;
-  day: string;
-  start: string;
-  end: string;
-  classRoom: string;
-}
-
-export interface Course {
-  id: number;
-  name: string;
-  credits: number;
-  groups: Group[];
-}
+import { Course } from "features/schedule/interfaces/schedule.interface";
 
 export interface Cycle {
-  id: number;
-  name: string;
+  cycle: string;
   courses: Course[];
+}
+
+export interface Career {
+  career: string;
+  cycles: Cycle[];
 }

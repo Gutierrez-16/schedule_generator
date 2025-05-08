@@ -26,7 +26,7 @@
   <div class="selected-courses">
     <div class="courses-list">
       <div *ngFor="let course of selectedCourses" class="course-header">
-        <span class="course-name">{{ course.name }}</span>
+        <span class="course-name">{{ course.course }}</span>
         <div style="display: flex; align-items: center; gap: 8px">
           <mat-chip>{{ course.credits }} cr.</mat-chip>
           <button

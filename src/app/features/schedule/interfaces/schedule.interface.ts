@@ -1,18 +1,17 @@
 export type DayOfWeek = 'Lunes' | 'Martes' | 'Miércoles' | 'Jueves' | 'Viernes' | 'Sábado';
 
-export interface ClassSession {
-  subject: string;
-  professor: string;
+export interface CourseDetail {
   classroom: string;
-  color: string;
+  day: string;
   startTime: string;
   endTime: string;
-  day: DayOfWeek;
-  rowSpan?: number;
+  teacher: string;
 }
 
-export interface ScheduleData {
-  [key: string]: {
-    [key: string]: ClassSession;
-  };
+export interface Course {
+  assignmentId: number;
+  courseId: number;
+  course: string;
+  credits: number;
+  details: CourseDetail[];
 }
