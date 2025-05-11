@@ -2,6 +2,7 @@
   height: 100%;
   overflow: hidden;
   background: var(--background-primary);
+  background-color: var(--background-primary);
 }
 
 mat-sidenav-container {
@@ -101,6 +102,31 @@ mat-divider {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.schedule-options {
+  padding: 1rem;
+}
+
+.options-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.options-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+.options-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  padding: 1rem;
 }
 
 @media (max-width: 1024px) {

@@ -1,9 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { DayOfWeek, Course } from './interfaces/schedule.interface';
+import {
+  DayOfWeek,
+  Course,
+  ClassTypeEnum,
+  GenerateSchedulesRequest,
+  PreferencesRequest,
+} from '@app/core/interfaces/schedule.interface';
 import { ExportButtonsComponent } from './components/export-buttons/export-buttons.component';
+import { SchedulesService } from '@app/core/services/schedules.service';
+import { Cycle } from '@app/features/cycles/interfaces/cycle.interface';
+
+export interface AssignmentDetailResponse {
+  assignmentDetailId: number;
+  career: string;
+  cycle: string;
+  classType: string;
+  courseId: number;
+  courseName: string;
+  credits: number;
+  professorName: string;
+  classroomName: string;
+  day: string;
+  startTime: string;
+  endTime: string;
+}
 
 @Component({
   selector: 'app-schedule',
@@ -18,6 +41,7 @@ import { ExportButtonsComponent } from './components/export-buttons/export-butto
   ],
 })
 export class ScheduleComponent implements OnInit {
+  readonly defaultCareerId = 1;
   timeSlots: string[] = this.generateTimeSlots();
   days: DayOfWeek[] = [
     'Lunes',
@@ -29,29 +53,53 @@ export class ScheduleComponent implements OnInit {
   ];
   courses: Course[] = [];
 
+  constructor(private schedulesService: SchedulesService) {}
+
   ngOnInit() {
-    this.courses = [
-      {
-        courseId: '101',
-        course: 'Matemáticas',
-        credits: 4,
-        details: [
-          {
-            teacher: 'Dr. García',
-            classTypes: [
-              {
-                assignmentDetailId: 1,
-                classroom: 'A101',
-                classType: 'TEORIA',
-                day: 'Lunes',
-                startTime: '07:00',
-                endTime: '08:30',
-              },
-            ],
-          },
-        ],
-      },
-    ];
+    // Inicializar el horario vacío
+    this.courses = [];
+  }
+
+  @Input() set scheduleData(data: any[] | null) {
+    console.log('📅 Recibiendo datos del horario:', data);
+    if (data && data.length > 0) {
+      // Reset courses array
+      this.courses = [];
+
+      // Map the courses from the input data
+      this.courses = data[0].courses.map((course: any) => ({
+        courseId: String(course.courseId),
+        course: course.course,
+        credits: course.credits,
+        details: course.details.map((detail: any) => ({
+          teacher: detail.teacher,
+          classTypes: detail.classTypes.map((ct: any) => ({
+            assignmentDetailId: ct.assignmentDetailId,
+            classroom: ct.classroom,
+            classType: ct.classType,
+            day: ct.day,
+            startTime: this.formatTime(ct.startTime),
+            endTime: this.formatTime(ct.endTime),
+          })),
+        })),
+      }));
+      console.log('🎯 Cursos procesados para mostrar:', this.courses);
+    }
+  }
+
+  private mapClassType(type: string): string {
+    const typeMap: Record<string, string> = {
+      T: 'TEORIA',
+      P: 'PRACTICA',
+      L: 'LABORATORIO',
+    };
+    return typeMap[type] || type;
+  }
+
+  private formatTime(time: string): string {
+    if (!time) return '';
+    // Remove seconds from time
+    return time.split(':').slice(0, 2).join(':');
   }
 
   private generateTimeSlots(): string[] {
@@ -75,10 +123,15 @@ export class ScheduleComponent implements OnInit {
   }
 
   getClass(day: string, time: string): CourseWithUI | null {
+    if (!this.courses || this.courses.length === 0) return null;
+
+    const currentTime = this.formatTime(time);
     const course = this.courses.find((course) =>
       course.details.some((detail) =>
         detail.classTypes.some(
-          (ct) => ct.day === day && ct.startTime <= time && ct.endTime > time
+          (ct) =>
+            ct.day === day &&
+            this.isTimeInRange(currentTime, ct.startTime, ct.endTime)
         )
       )
     );
@@ -87,27 +140,45 @@ export class ScheduleComponent implements OnInit {
 
     const detail = course.details.find((d) =>
       d.classTypes.some(
-        (ct) => ct.day === day && ct.startTime <= time && ct.endTime > time
+        (ct) =>
+          ct.day === day &&
+          this.isTimeInRange(currentTime, ct.startTime, ct.endTime)
       )
     );
 
     if (!detail) return null;
 
     const classType = detail.classTypes.find(
-      (ct) => ct.day === day && ct.startTime <= time && ct.endTime > time
+      (ct) =>
+        ct.day === day &&
+        this.isTimeInRange(currentTime, ct.startTime, ct.endTime)
     );
 
     if (!classType) return null;
 
+    const colorMap: Record<string, string> = {
+      T: '#4fc3f7', // Azul para teoría
+      P: '#81c784', // Verde para práctica
+      L: '#ff8a65', // Naranja para laboratorio
+    };
+
     return {
       ...course,
-      color: '#4fc3f7',
-      subject: course.course,
+      color: colorMap[classType.classType] || '#4fc3f7',
+      subject: `${course.course} (${classType.classType})`,
       professor: detail.teacher,
       classroom: classType.classroom,
       startTime: classType.startTime,
       endTime: classType.endTime,
     };
+  }
+
+  private isTimeInRange(current: string, start: string, end: string): boolean {
+    return current >= start && current < end;
+  }
+
+  private timeInRange(time: string, start: string, end: string): boolean {
+    return time >= start && time < end;
   }
 
   shouldShowCell(day: string, time: string): boolean {
@@ -120,7 +191,9 @@ export class ScheduleComponent implements OnInit {
 
     if (!detail) return true;
 
-    return detail.classTypes.some((ct) => ct.startTime === time);
+    return detail.classTypes.some(
+      (ct) => this.formatTime(ct.startTime) === time
+    );
   }
 
   calculateClassSpan(course: CourseWithUI | null): number {
@@ -140,6 +213,78 @@ export class ScheduleComponent implements OnInit {
   private timeToMinutes(time: string): number {
     const [hours, minutes] = time.split(':').map(Number);
     return hours * 60 + minutes;
+  }
+
+  generateSchedule() {
+    const preferences: PreferencesRequest = {
+      avoidDays: [],
+      avoidStartHour: '07:00',
+      preferredTeachers: [],
+      preferredModalities: ['TEORIA', 'PRACTICA'],
+      maxHoursPerDay: 8,
+      minDaysPerWeek: 3,
+      maxDaysPerWeek: 6,
+      blockedHours: [],
+    };
+
+    const request: GenerateSchedulesRequest = {
+      careerId: this.defaultCareerId,
+      preferences: preferences,
+      courseIds: this.courses.map((c) => Number(c.courseId)),
+    };
+
+    this.schedulesService.generateSchedules(request).subscribe({
+      next: (response) => {
+        if (response.success) {
+          const assignments =
+            response.data as unknown as AssignmentDetailResponse[];
+          this.updateSchedule(assignments);
+        }
+      },
+      error: (error) => console.error('Error generating schedule:', error),
+    });
+  }
+
+  private updateSchedule(assignments: AssignmentDetailResponse[]) {
+    this.courses = assignments.reduce((courses: Course[], assignment) => {
+      const existingCourse = courses.find(
+        (c: Course) => c.courseId === String(assignment.courseId)
+      );
+
+      if (existingCourse) {
+        existingCourse.details[0].classTypes.push({
+          assignmentDetailId: assignment.assignmentDetailId,
+          classroom: assignment.classroomName,
+          classType: assignment.classType as ClassTypeEnum,
+          day: assignment.day,
+          startTime: assignment.startTime,
+          endTime: assignment.endTime,
+        });
+      } else {
+        courses.push({
+          courseId: String(assignment.courseId),
+          course: assignment.courseName,
+          credits: assignment.credits,
+          details: [
+            {
+              teacher: assignment.professorName,
+              classTypes: [
+                {
+                  assignmentDetailId: assignment.assignmentDetailId,
+                  classroom: assignment.classroomName,
+                  classType: assignment.classType as ClassTypeEnum,
+                  day: assignment.day,
+                  startTime: assignment.startTime,
+                  endTime: assignment.endTime,
+                },
+              ],
+            },
+          ],
+        });
+      }
+
+      return courses;
+    }, [] as Course[]);
   }
 }
 

@@ -55,7 +55,7 @@ export class CyclesComponent implements OnInit {
   @ViewChild('courseDetailsDialog') courseDetailsDialog!: TemplateRef<any>;
 
   cycles: Cycle[] = [];
-  selectedCourses: Set<number> = new Set();
+  selectedCourses: Set<string> = new Set();
   careerData!: Career;
   Array = Array;
   loading = true;
@@ -94,26 +94,24 @@ export class CyclesComponent implements OnInit {
   }
 
   toggleCourseSelection(course: Course): void {
-    const id = Number(course.courseId);
-    if (this.selectedCourses.has(id)) {
-      this.selectedCourses.delete(id);
+    if (this.selectedCourses.has(course.courseId)) {
+      this.selectedCourses.delete(course.courseId);
     } else {
-      this.selectedCourses.add(id);
+      this.selectedCourses.add(course.courseId);
     }
 
     const selectedCoursesList = this.cycles
       .flatMap((cycle) => cycle.courses)
-      .filter((course) => this.selectedCourses.has(Number(course.courseId)));
+      .filter((course) => this.selectedCourses.has(course.courseId));
 
     this.selectedCoursesChange.emit(selectedCoursesList);
   }
 
-  handleCourseRemoval(courseId: string | number): void {
-    const id = typeof courseId === 'string' ? Number(courseId) : courseId;
-    this.selectedCourses.delete(id);
+  handleCourseRemoval(courseId: string): void {
+    this.selectedCourses.delete(courseId);
     const selectedCoursesList = this.cycles
       .flatMap((cycle) => cycle.courses)
-      .filter((course) => this.selectedCourses.has(Number(course.courseId)));
+      .filter((course) => this.selectedCourses.has(course.courseId));
 
     this.selectedCoursesChange.emit(selectedCoursesList);
   }

@@ -5,7 +5,14 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Course } from '@app/features/schedule/interfaces/schedule.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { PreferencesModalComponent } from '../schedule/components/preferences-modal/preferences-modal.component';
+import { Router } from '@angular/router';
+import {
+  Course,
+  GenerateSchedulesRequest,
+  PreferencesRequest,
+} from '@app/core/interfaces/schedule.interface';
 import { ScheduleRequest } from 'src/app/core/interfaces/ScheduleRequest';
 import { SchedulesService } from 'src/app/core/services/schedules.service';
 
@@ -23,8 +30,12 @@ import { SchedulesService } from 'src/app/core/services/schedules.service';
   styleUrls: ['./course-details.component.css'],
 })
 export class CourseDetailsComponent {
-  private snackBar = inject(MatSnackBar);
-  private schedulesService = inject(SchedulesService);
+  constructor(
+    private snackBar: MatSnackBar,
+    private schedulesService: SchedulesService,
+    private dialog: MatDialog,
+    private router: Router
+  ) {}
 
   @Output() courseRemoved = new EventEmitter<string>(); // Changed from number to string
 
@@ -67,27 +78,42 @@ export class CourseDetailsComponent {
       return;
     }
 
-    const request: ScheduleRequest = {
-      userId: this.userId,
-      courseIds: this.selectedCourses.map((course) => course.courseId), // Already strings
-    };
+    const dialogRef = this.dialog.open(PreferencesModalComponent);
 
-    console.log('Enviando solicitud de horario:', request);
+    dialogRef.afterClosed().subscribe((preferences) => {
+      if (preferences) {
+        const request: GenerateSchedulesRequest = {
+          careerId: 1,
+          preferences: preferences,
+          courseIds: this.selectedCourses.map((course) =>
+            Number(course.courseId)
+          ),
+        };
 
-    this.schedulesService.saveSchedule(request).subscribe({
-      next: () => {
-        this.snackBar.open('Cursos agregados correctamente', 'OK', {
-          duration: 3000,
-          panelClass: ['success-snackbar'],
+        this.schedulesService.generateSchedules(request).subscribe({
+          next: (response) => {
+            if (response.success) {
+              // Primero navegamos al schedule manager
+              this.router.navigate(['/schedule-manager'], {
+                state: { scheduleData: response.data },
+              });
+
+              // Después forzamos la visualización del horario
+              setTimeout(() => {
+                localStorage.setItem('showSchedule', 'true');
+                window.location.reload();
+              }, 100);
+            }
+          },
+          error: (err) => {
+            console.error('Error al generar horario:', err);
+            this.snackBar.open('Error al generar el horario', 'OK', {
+              duration: 3000,
+              panelClass: ['error-snackbar'],
+            });
+          },
         });
-      },
-      error: (err) => {
-        console.error('Error al guardar horario:', err);
-        this.snackBar.open('Error al guardar los cursos', 'OK', {
-          duration: 3000,
-          panelClass: ['error-snackbar'],
-        });
-      },
+      }
     });
   }
 }

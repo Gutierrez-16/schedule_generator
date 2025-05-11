@@ -22,7 +22,7 @@
                   <div class="course-item">
                     <mat-checkbox
                       (change)="toggleCourseSelection(course)"
-                      [checked]="selectedCourses.has(+course.courseId)"
+                      [checked]="selectedCourses.has(course.courseId)"
                       (click)="$event.stopPropagation()"
                     ></mat-checkbox>
                     <span class="course-name">{{ course.course }}</span>

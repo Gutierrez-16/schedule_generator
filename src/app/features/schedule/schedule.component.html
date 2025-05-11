@@ -1,6 +1,10 @@
 <div class="schedule-container">
   <div class="actions-container">
-    <button mat-raised-button class="action-button generate-button">
+    <button
+      mat-raised-button
+      class="action-button generate-button"
+      (click)="generateSchedule()"
+    >
       <mat-icon>auto_awesome</mat-icon>
       Generar Horario
     </button>
@@ -20,7 +24,8 @@
           *ngFor="let day of days"
           class="schedule-cell"
           [style.background-color]="getClass(day, time)?.color + '15'"
-          [style.borderLeftColor]="getClass(day, time)?.color"
+          [style.border-left-width.px]="getClass(day, time) ? 4 : 1"
+          [style.border-left-color]="getClass(day, time)?.color"
           [attr.rowspan]="
             shouldShowCell(day, time)
               ? calculateClassSpan(getClass(day, time))
