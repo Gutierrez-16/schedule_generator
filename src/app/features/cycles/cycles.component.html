@@ -22,7 +22,7 @@
                   <div class="course-item">
                     <mat-checkbox
                       (change)="toggleCourseSelection(course)"
-                      [checked]="selectedCourses.has(course.courseId)"
+                      [checked]="selectedCourses.has(+course.courseId)"
                       (click)="$event.stopPropagation()"
                     ></mat-checkbox>
                     <span class="course-name">{{ course.course }}</span>
@@ -36,7 +36,24 @@
                   <div class="group-info">
                     <span class="group-teacher">{{ detail.teacher }}</span>
                   </div>
-                  <span class="group-classroom">{{ detail.classroom }}</span>
+                  <div class="class-types-container">
+                    <div
+                      *ngFor="let classType of detail.classTypes"
+                      class="class-type-item"
+                    >
+                      <span
+                        class="class-type-badge"
+                        [ngClass]="classType.classType.toLowerCase()"
+                      >
+                        {{ classType.classType }}
+                      </span>
+                      <span class="class-time">
+                        {{ classType.startTime }} - {{ classType.endTime }}
+                      </span>
+                      <span class="class-day">{{ classType.day }}</span>
+                      <span class="class-room">{{ classType.classroom }}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </mat-expansion-panel>

@@ -30,53 +30,28 @@ export class ScheduleComponent implements OnInit {
   courses: Course[] = [];
 
   ngOnInit() {
-    const dataFromService = [
+    this.courses = [
       {
-        name: 'Anatomía Humana I',
-        credits: 6,
-        details: [
-          { day: 'Lunes', startTime: '08:00', endTime: '10:00' },
-          { day: 'Miércoles', startTime: '07:00', endTime: '09:00' },
-        ],
-      },
-      {
-        name: 'Biología Celular y Molecular',
-        credits: 5,
-        details: [
-          { day: 'Martes', startTime: '10:00', endTime: '12:00' },
-          { day: 'Jueves', startTime: '10:00', endTime: '12:00' },
-        ],
-      },
-      {
-        name: 'Bioestadística',
+        courseId: '101',
+        course: 'Matemáticas',
         credits: 4,
         details: [
-          { day: 'Martes', startTime: '14:00', endTime: '16:00' },
-          { day: 'Jueves', startTime: '14:00', endTime: '16:00' },
-        ],
-      },
-      {
-        name: 'Bioquímica Médica',
-        credits: 5,
-        details: [
-          { day: 'Viernes', startTime: '08:00', endTime: '10:00' },
-          { day: 'Lunes', startTime: '14:00', endTime: '16:00' },
+          {
+            teacher: 'Dr. García',
+            classTypes: [
+              {
+                assignmentDetailId: 1,
+                classroom: 'A101',
+                classType: 'TEORIA',
+                day: 'Lunes',
+                startTime: '07:00',
+                endTime: '08:30',
+              },
+            ],
+          },
         ],
       },
     ];
-
-    // Transformamos al tipo Course esperado por el componente
-    this.courses = dataFromService.map((item, index) => ({
-      assignmentId: index + 1,
-      courseId: 100 + index + 1,
-      course: item.name,
-      credits: item.credits,
-      details: item.details.map((detail) => ({
-        ...detail,
-        teacher: 'Por asignar', // Puedes reemplazar esto si tienes los nombres
-        classroom: 'Aula por definir',
-      })),
-    }));
   }
 
   private generateTimeSlots(): string[] {
@@ -101,44 +76,60 @@ export class ScheduleComponent implements OnInit {
 
   getClass(day: string, time: string): CourseWithUI | null {
     const course = this.courses.find((course) =>
-      course.details.some(
-        (detail) =>
-          detail.day === day &&
-          detail.startTime <= time &&
-          detail.endTime > time
+      course.details.some((detail) =>
+        detail.classTypes.some(
+          (ct) => ct.day === day && ct.startTime <= time && ct.endTime > time
+        )
       )
     );
 
     if (!course) return null;
 
-    const detail = course.details.find(
-      (d) => d.day === day && d.startTime <= time && d.endTime > time
+    const detail = course.details.find((d) =>
+      d.classTypes.some(
+        (ct) => ct.day === day && ct.startTime <= time && ct.endTime > time
+      )
     );
 
     if (!detail) return null;
+
+    const classType = detail.classTypes.find(
+      (ct) => ct.day === day && ct.startTime <= time && ct.endTime > time
+    );
+
+    if (!classType) return null;
 
     return {
       ...course,
       color: '#4fc3f7',
       subject: course.course,
       professor: detail.teacher,
-      classroom: detail.classroom,
-      startTime: detail.startTime,
-      endTime: detail.endTime,
+      classroom: classType.classroom,
+      startTime: classType.startTime,
+      endTime: classType.endTime,
     };
   }
 
   shouldShowCell(day: string, time: string): boolean {
     const course = this.getClass(day, time);
     if (!course) return true;
-    return course.details.some((d) => d.startTime === time);
+
+    const detail = course.details.find((d) =>
+      d.classTypes.some((ct) => ct.day === day)
+    );
+
+    if (!detail) return true;
+
+    return detail.classTypes.some((ct) => ct.startTime === time);
   }
 
   calculateClassSpan(course: CourseWithUI | null): number {
     if (!course) return 1;
+
     const detail = course.details[0];
-    const startMinutes = this.timeToMinutes(detail.startTime);
-    const endMinutes = this.timeToMinutes(detail.endTime);
+    const classType = detail.classTypes[0];
+    const startMinutes = this.timeToMinutes(classType.startTime);
+    const endMinutes = this.timeToMinutes(classType.endTime);
     return Math.ceil((endMinutes - startMinutes) / 45);
   }
 

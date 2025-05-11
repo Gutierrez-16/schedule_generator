@@ -1,4 +1,11 @@
-import { Component, ViewChild, TemplateRef, Output, EventEmitter, OnInit } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  TemplateRef,
+  Output,
+  EventEmitter,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -14,7 +21,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Cycle, Career } from './interfaces/cycle.interface';
-import { Course } from 'features/schedule/interfaces/schedule.interface';
+import {
+  Course,
+  CourseDetail,
+  ClassType,
+} from '@app/features/schedule/interfaces/schedule.interface';
 import { AssignmentsService } from '../../core/services/assignments.service';
 
 @Component({
@@ -35,10 +46,10 @@ import { AssignmentsService } from '../../core/services/assignments.service';
     MatCheckboxModule,
     FormsModule,
     MatTabsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   templateUrl: './cycles.component.html',
-  styleUrls: ['./cycles.component.css']
+  styleUrls: ['./cycles.component.css'],
 })
 export class CyclesComponent implements OnInit {
   @ViewChild('courseDetailsDialog') courseDetailsDialog!: TemplateRef<any>;
@@ -46,10 +57,10 @@ export class CyclesComponent implements OnInit {
   cycles: Cycle[] = [];
   selectedCourses: Set<number> = new Set();
   careerData!: Career;
-  Array = Array; 
+  Array = Array;
   loading = true;
   error: string | null = null;
-  readonly defaultCareerId = 1;
+  readonly defaultCareerId = 9;
 
   constructor(private assignmentsService: AssignmentsService) {}
 
@@ -62,43 +73,48 @@ export class CyclesComponent implements OnInit {
   loadCareerData() {
     this.loading = true;
     this.error = null;
-    
-    this.assignmentsService.getAssignmentsByCareer(this.defaultCareerId).subscribe({
-      next: (data) => {
-        this.careerData = data;
-        this.cycles = data.cycles;
-        this.loading = false;
-        console.log(`Carrera cargada: ${this.careerData.career}`);
-        console.log(`Total de ciclos: ${this.cycles.length}`);
-      },
-      error: (err) => {
-        this.error = 'No se pudieron cargar los cursos. Por favor, intente más tarde.';
-        this.loading = false;
-        console.error('Error cargando cursos:', err);
-      }
-    });
+
+    this.assignmentsService
+      .getAssignmentsByCareer(this.defaultCareerId)
+      .subscribe({
+        next: (data) => {
+          this.careerData = data;
+          this.cycles = data.cycles;
+          this.loading = false;
+          console.log(`Carrera cargada: ${this.careerData.career}`);
+          console.log(`Total de ciclos: ${this.cycles.length}`);
+        },
+        error: (err) => {
+          this.error =
+            'No se pudieron cargar los cursos. Por favor, intente más tarde.';
+          this.loading = false;
+          console.error('Error cargando cursos:', err);
+        },
+      });
   }
 
   toggleCourseSelection(course: Course): void {
-    if (this.selectedCourses.has(course.courseId)) {
-      this.selectedCourses.delete(course.courseId);
+    const id = Number(course.courseId);
+    if (this.selectedCourses.has(id)) {
+      this.selectedCourses.delete(id);
     } else {
-      this.selectedCourses.add(course.courseId);
+      this.selectedCourses.add(id);
     }
-    
+
     const selectedCoursesList = this.cycles
-      .flatMap(cycle => cycle.courses)
-      .filter(course => this.selectedCourses.has(course.courseId));
-      
+      .flatMap((cycle) => cycle.courses)
+      .filter((course) => this.selectedCourses.has(Number(course.courseId)));
+
     this.selectedCoursesChange.emit(selectedCoursesList);
   }
 
-  handleCourseRemoval(courseId: number) {
-    this.selectedCourses.delete(courseId);
+  handleCourseRemoval(courseId: string | number): void {
+    const id = typeof courseId === 'string' ? Number(courseId) : courseId;
+    this.selectedCourses.delete(id);
     const selectedCoursesList = this.cycles
-      .flatMap(cycle => cycle.courses)
-      .filter(course => this.selectedCourses.has(course.courseId));
-    
+      .flatMap((cycle) => cycle.courses)
+      .filter((course) => this.selectedCourses.has(Number(course.courseId)));
+
     this.selectedCoursesChange.emit(selectedCoursesList);
   }
 
@@ -120,12 +136,16 @@ export class CyclesComponent implements OnInit {
   filterCourses(cycle: Cycle) {
     if (!this.searchText) return cycle.courses;
     const search = this.searchText.toLowerCase();
-    return cycle.courses.filter(course => 
-      course.course.toLowerCase().includes(search) ||
-      course.details.some(detail => 
-        detail.teacher.toLowerCase().includes(search) ||
-        detail.classroom.toLowerCase().includes(search)
-      )
+    return cycle.courses.filter(
+      (course) =>
+        course.course.toLowerCase().includes(search) ||
+        course.details.some(
+          (detail: CourseDetail) =>
+            detail.teacher.toLowerCase().includes(search) ||
+            detail.classTypes.some((ct) =>
+              ct.classroom.toLowerCase().includes(search)
+            )
+        )
     );
   }
 }

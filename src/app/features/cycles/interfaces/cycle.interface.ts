@@ -1,4 +1,4 @@
-import { Course } from "features/schedule/interfaces/schedule.interface";
+import { Course } from '@app/features/schedule/interfaces/schedule.interface';
 
 export interface Cycle {
   cycle: string;
