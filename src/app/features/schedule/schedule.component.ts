@@ -16,19 +16,28 @@ export class ScheduleComponent {
   @Input() allCourses: Course[] = [];
 
   private courseColors: Map<string, string> = new Map();
-  private pastelColors = [
-    '#ffadad', // Rosa suave
-    '#ffd6a5', // Melocotón
-    '#fdffb6', // Amarillo
-    '#caffbf', // Verde menta
-    '#9bf6ff', // Azul cielo
-    '#a0c4ff', // Azul pastel
-    '#bdb2ff', // Púrpura suave
-    '#ffc6ff', // Lavanda
-    '#ffe5d9', // Durazno
-    '#b4f8c8', // Verde claro
-    '#afcbff', // Azul pálido
-    '#ffcfd2', // Rosa pálido
+
+  private pastelColors: string[] = [
+    '#FFCDD2',
+    '#F8BBD0',
+    '#E1BEE7',
+    '#D1C4E9',
+    '#C5CAE9',
+    '#BBDEFB',
+    '#B3E5FC',
+    '#B2EBF2',
+    '#B2DFDB',
+    '#C8E6C9',
+    '#DCEDC8',
+    '#F0F4C3',
+    '#FFF9C4',
+    '#FFECB3',
+    '#FFE0B2',
+    '#FFCCBC',
+    '#D7CCC8',
+    '#CFD8DC',
+    '#F5E1FD',
+    '#E0F7FA',
   ];
 
   days: DayOfWeek[] = [
@@ -50,11 +59,12 @@ export class ScheduleComponent {
             this.isTimeInRange(time, type.startTime, type.endTime)
           ) {
             if (!this.courseColors.has(course.course)) {
-              const randomColor =
-                this.pastelColors[
-                  Math.floor(Math.random() * this.pastelColors.length)
-                ] + '80';
-              this.courseColors.set(course.course, randomColor);
+              const index = this.allCourses.findIndex(
+                (c) => c.course === course.course
+              );
+              const assignedColor =
+                this.pastelColors[index % this.pastelColors.length];
+              this.courseColors.set(course.course, assignedColor);
             }
 
             return {

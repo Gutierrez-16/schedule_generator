@@ -67,3 +67,44 @@ h1 {
 .regenerate-button mat-icon {
   color: white !important;
 }
+
+@media (max-width: 768px) {
+  .schedule-container {
+    padding: 12px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .regenerate-button {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .schedule-container {
+    padding: 8px;
+  }
+
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .regenerate-button {
+    width: 100%;
+  }
+}
