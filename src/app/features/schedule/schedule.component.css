@@ -1,123 +1,148 @@
-.schedule-container {
-  padding: 1rem;
-  overflow-x: auto;
-  background-color: var(--background-primary);
+.error-icon {
+  color: #ff4444 !important;
 }
 
-.export-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 1rem;
+.teacher {
+  color: #3f51b5;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.dark-theme .teacher {
+  color: #9fa8da;
+}
+
+.room {
+  color: #455a64;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.dark-theme .room {
+  color: #b0bec5;
+}
+
+.time {
+  color: #546e7a;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.dark-theme .time {
+  color: #90a4ae;
+}
+
+.dark-theme .schedule-table th {
+  background: #37474f;
+  color: #ffffff;
+  border-color: #546e7a;
+}
+
+.class-info.theory .type {
+  color: #3949ab;
+  font-weight: 500;
+}
+
+.class-info.practice .type {
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+.table-container {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 
 .schedule-table {
   width: 100%;
-  border-collapse: collapse;
-  background: var(--card-background);
-
-  th {
-    background: var(--card-background);
-    font-weight: 500;
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-  }
-
-  .time-cell {
-    width: 80px;
-    background: var(--card-background);
-    font-weight: 400;
-    text-align: center;
-    border: 1px solid var(--border-color);
-    padding: 6px;
-    color: var(--text-secondary);
-  }
-}
-
-.schedule-cell {
-  min-width: 140px;
-  height: 70px;
-  vertical-align: top;
-  border: 1px solid var(--border-color);
-  background: var(--card-background);
-  transition: all 0.2s ease;
-  padding: 0;
-  position: relative;
-  overflow: hidden;
-
-  &::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 4px;
-    height: 100%;
-    background: inherit;
-    opacity: 0.8;
-  }
-}
-
-.has-class {
-  background: var(--card-background);
-}
-
-.class-info {
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 6px 8px;
+  table-layout: fixed;
 }
 
-.subject {
-  font-weight: 500;
-  color: var(--text-primary);
-  font-size: 0.9em;
-}
-
-.time-range {
-  font-size: 0.75em;
-  color: var(--text-secondary);
-}
-
-.professor,
-.classroom {
-  font-size: 0.8em;
-  color: var(--text-secondary);
-}
-
-.hidden-cell {
-  display: none;
-}
-
-.actions-container {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-}
-
-.action-button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 16px;
-  height: 36px;
-  border-radius: 4px;
-  font-weight: 500;
-  color: var(--text-primary) !important;
-}
-
-.generate-button {
-  background: linear-gradient(45deg, #7b1fa2, #9c27b0);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  color: white !important;
+.schedule-table td {
+  background: var(--card-background);
+  border: 1px solid var(--border-color);
+  padding: 0;
+  height: 100%;
   transition: all 0.3s ease;
 }
 
-.generate-button mat-icon {
-  color: white !important;
+.schedule-table th {
+  background: #e0e0e0;
+  color: #333333;
+  font-weight: 600;
+  padding: 12px 4px;
+  text-align: center;
+  border: 1px solid #ccc;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  letter-spacing: 0.5px;
+}
+
+.class-info {
+  min-height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 2px;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  /* Remove background-color from here */
+}
+
+/* Remove these classes as we'll use backgroundColor from TS */
+/* .class-info.theory,
+.class-info.practice,
+.dark-theme .class-info.theory,
+.dark-theme .class-info.practice {
+  background-color: ...;
+} */
+
+.class-info:hover {
+  transform: scale(1.02);
+  filter: brightness(0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme .class-info:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.invalid-class {
+  opacity: 0.8;
+}
+
+.dark-theme .invalid-class {
+  opacity: 0.7;
+}
+
+.class-info::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit;
+  opacity: 0.7;
+  z-index: -1;
+  border-radius: inherit;
+}
+
+.type {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 2px 0;
+}
+
+.type .error-icon {
+  font-size: 16px;
+  margin: 0;
 }

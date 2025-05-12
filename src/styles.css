@@ -27,6 +27,11 @@
   --font-lg: 1.125rem;
   --letter-spacing-sm: 0.25px;
   --letter-spacing-md: 0.5px;
+  --card-border-radius: 12px;
+  --card-shadow-light: 0 2px 12px rgba(0, 0, 0, 0.1);
+  --card-shadow-dark: 0 2px 12px rgba(0, 0, 0, 0.3);
+  --card-border-light: 1px solid rgba(0, 0, 0, 0.08);
+  --card-border-dark: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Tema oscuro más intenso */
@@ -43,6 +48,8 @@
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --card-background: #1e1e1e;
+  --card-hover: #252525;
 }
 
 /* Estilos base */
@@ -105,4 +112,22 @@ app-root {
 
 .mat-menu-item:hover {
   background-color: var(--hover-color) !important;
+}
+
+.card {
+  background: var(--card-background);
+  border-radius: var(--card-border-radius);
+  border: var(--card-border-light);
+  box-shadow: var(--card-shadow-light);
+  transition: var(--transition-normal);
+}
+
+.dark-theme .card {
+  border: var(--card-border-dark);
+  box-shadow: var(--card-shadow-dark);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }

@@ -20,13 +20,14 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Cycle, Career } from './interfaces/cycle.interface';
+
+import { AssignmentsService } from '../../core/services/assignments.service';
 import {
+  Career,
   Course,
   CourseDetail,
-  ClassType,
-} from '@app/features/schedule/interfaces/schedule.interface';
-import { AssignmentsService } from '../../core/services/assignments.service';
+  Cycle,
+} from '@app/core/interfaces/schedule.interface';
 
 @Component({
   selector: 'app-cycles',

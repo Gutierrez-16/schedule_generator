@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CyclesComponent } from '@app/features/cycles/cycles.component';
 import { CourseDetailsComponent } from '@app/features/course-details/course-details.component';
-import { Course } from '@app/features/schedule/interfaces/schedule.interface';
+import { Course } from '@app/core/interfaces/schedule.interface';
 
 @Component({
   selector: 'app-course-selection',

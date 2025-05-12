@@ -1,6 +1,6 @@
 export const environment = {
-    production: true,
-    apiUrl: 'https://tu-api-produccion.com/api',
-    authApiUrl: 'https://tu-api-produccion.com/auth',
-    baseUrl: 'https://tu-api-produccion.com'
+  production: true,
+  apiUrl: 'https://schedule-generator-backend.onrender.com/api',
+  authApiUrl: 'https://schedule-generator-backend.onrender.com/auth',
+  baseUrl: 'https://schedule-generator-backend.onrender.com',
 };

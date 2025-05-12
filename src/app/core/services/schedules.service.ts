@@ -6,7 +6,6 @@ import {
   GenerateSchedulesRequest,
   ApiResponse,
 } from '../interfaces/schedule.interface';
-import { Career } from '@app/features/cycles/interfaces/cycle.interface';
 import { tap } from 'rxjs/operators';
 
 @Injectable({

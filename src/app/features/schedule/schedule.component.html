@@ -1,15 +1,4 @@
-<div class="schedule-container">
-  <div class="actions-container">
-    <button
-      mat-raised-button
-      class="action-button generate-button"
-      (click)="generateSchedule()"
-    >
-      <mat-icon>auto_awesome</mat-icon>
-      Generar Horario
-    </button>
-    <app-export-buttons></app-export-buttons>
-  </div>
+<div class="table-container">
   <table class="schedule-table">
     <thead>
       <tr>
@@ -23,25 +12,34 @@
         <td
           *ngFor="let day of days"
           class="schedule-cell"
-          [style.background-color]="getClass(day, time)?.color + '15'"
-          [style.border-left-width.px]="getClass(day, time) ? 4 : 1"
-          [style.border-left-color]="getClass(day, time)?.color"
-          [attr.rowspan]="
-            shouldShowCell(day, time)
-              ? calculateClassSpan(getClass(day, time))
-              : 1
-          "
-          [class.has-class]="getClass(day, time)"
-          [class.hidden-cell]="!shouldShowCell(day, time)"
+          [ngClass]="{ 'invalid-class': !isValidClass(day, time) }"
+          [attr.rowspan]="getClassSpan(day, time)"
         >
-          <ng-container *ngIf="getClass(day, time) as class">
-            <div class="class-info">
-              <div class="subject">{{ class.subject }}</div>
-              <div class="time-range">
-                {{ formatTimeRange(class.startTime, class.endTime) }}
+          <ng-container *ngIf="getClassInfo(day, time) as info">
+            <div
+              class="class-info"
+              [style.background-color]="info.backgroundColor"
+              [class.invalid-class]="!info.value"
+              [class.theory]="info.classType === 'T'"
+              [class.practice]="info.classType === 'P'"
+            >
+              <div class="subject">{{ info.course }}</div>
+              <div class="type">
+                {{ info.classType }}
+                <mat-icon
+                  *ngIf="!info.value"
+                  class="error-icon"
+                  matTooltip="{{ info.message }}"
+                >
+                  warning
+                </mat-icon>
               </div>
-              <div class="professor">{{ class.professor }}</div>
-              <div class="classroom">{{ class.classroom }}</div>
+              <div class="time">
+                {{ info.startTime | slice : 0 : 5 }} -
+                {{ info.endTime | slice : 0 : 5 }}
+              </div>
+              <div class="teacher">{{ info.teacher }}</div>
+              <div class="room">{{ info.classroom }}</div>
             </div>
           </ng-container>
         </td>

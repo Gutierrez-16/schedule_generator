@@ -34,15 +34,24 @@ export interface ApiResponse<T> {
   message: string;
   success: boolean;
 }
+export interface Cycle {
+  cycle: string;
+  courses: Course[];
+}
 
-// Course related interfaces
+export interface Career {
+  career: string;
+  cycles: Cycle[];
+}
 export interface ClassType {
   assignmentDetailId: number;
   classroom: string;
   classType: string;
   day: string;
-  startTime: string;
-  endTime: string;
+  startTime: string; // Changed from Time to string for frontend
+  endTime: string; // Changed from Time to string for frontend
+  value: boolean; // Added for checkbox value
+  message: string; // Added for checkbox message
 }
 
 export interface CourseDetail {

@@ -1,6 +1,6 @@
 export const environment = {
-    production: false,
-    apiUrl: 'https://schedule-generator-backend.onrender.com/api',
-    authApiUrl: 'http://localhost:3000/auth',
-    baseUrl: 'http://localhost:3000'
-  };
+  production: false,
+  apiUrl: 'https://schedule-generator-backend.onrender.com/api',
+  authApiUrl: 'https://schedule-generator-backend.onrender.com/auth',
+  baseUrl: 'https://schedule-generator-backend.onrender.com',
+};

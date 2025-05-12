@@ -14,11 +14,13 @@
       <button
         mat-button
         class="enroll-button"
-        [disabled]="totalCredits > maxCredits || totalCredits === 0"
+        [disabled]="
+          totalCredits > maxCredits || totalCredits === 0 || isLoading
+        "
         (click)="enrollCourses()"
       >
-        <mat-icon>school</mat-icon>
-        Cursos a Llevar
+        <mat-icon>{{ isLoading ? "pending" : "psychology" }}</mat-icon>
+        {{ isLoading ? "Generando..." : "Generar Horario" }}
       </button>
     </div>
   </div>
@@ -39,5 +41,13 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-overlay">
+    <mat-progress-spinner
+      mode="indeterminate"
+      diameter="50"
+    ></mat-progress-spinner>
+    <span>La IA está generando tu horario...</span>
   </div>
 </div>
