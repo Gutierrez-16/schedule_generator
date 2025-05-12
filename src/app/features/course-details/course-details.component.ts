@@ -15,6 +15,7 @@ import {
   PreferencesRequest,
 } from '@app/core/interfaces/schedule.interface';
 import { SchedulesService } from 'src/app/core/services/schedules.service';
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
   selector: 'app-course-details',
@@ -27,23 +28,45 @@ import { SchedulesService } from 'src/app/core/services/schedules.service';
     MatChipsModule,
     MatProgressSpinnerModule,
   ],
+  providers: [AuthService], // Agregar AuthService a providers
   templateUrl: './course-details.component.html',
   styleUrls: ['./course-details.component.css'],
 })
 export class CourseDetailsComponent implements OnInit {
   private uniqueCoursesMap = new Map<string, Course>();
   selectedCourses: Course[] = [];
-  maxCredits = 21;
+  maxCredits: number;
   totalCredits = 0;
   private originalRequest: any;
   isLoading = false;
+  careerName: string = '';
 
   constructor(
     private snackBar: MatSnackBar,
     private schedulesService: SchedulesService,
     private dialog: MatDialog,
-    private router: Router
-  ) {}
+    private router: Router,
+    private authService: AuthService // Agregar AuthService
+  ) {
+    const currentUser = this.authService.getCurrentUser();
+    this.maxCredits = currentUser?.credits || 21;
+
+    // Asignar nombre de carrera basado en el ID
+    const careerMap: { [key: number]: string } = {
+      1: 'Ingeniería de Sistemas',
+      2: 'Ingeniería Civil',
+      3: 'Ingeniería Industrial',
+      4: 'Arquitectura',
+      5: 'Medicina',
+      6: 'Derecho',
+      7: 'Psicología',
+      8: 'Administración',
+      9: 'Contabilidad',
+    };
+
+    this.careerName =
+      careerMap[currentUser?.career || 0] || 'Carrera no especificada';
+  }
 
   @Output() courseRemoved = new EventEmitter<string>();
 
@@ -114,15 +137,12 @@ export class CourseDetailsComponent implements OnInit {
       return;
     }
 
-    const dialogRef = this.dialog.open(PreferencesModalComponent, {
-      panelClass: 'preferences-dialog',
-      disableClose: false,
-      position: { top: '100px' },
-    });
+    const dialogRef = this.dialog.open(PreferencesModalComponent);
     dialogRef.afterClosed().subscribe((preferences) => {
       if (preferences) {
+        const currentUser = this.authService.getCurrentUser();
         const request: GenerateSchedulesRequest = {
-          careerId: 9,
+          careerId: currentUser?.career || 0, // Usar carrera del usuario
           preferences: {
             avoidDays: [],
             avoidStartHour: '07:00',

@@ -1,13 +1,20 @@
-<div class="selection-container">
-  <div class="left-panel">
-    <app-cycles
-      #cyclesComponent
-      (selectedCoursesChange)="onSelectedCoursesChange($event)"
-    ></app-cycles>
-  </div>
-  <div class="right-panel">
-    <app-course-details
-      (courseRemoved)="onCourseRemoved($event)"
-    ></app-course-details>
+<div class="page-container">
+  <header>
+    <h1 class="career-title">{{ careerName }}</h1>
+  </header>
+
+  <div class="content-container">
+    <div class="left-panel">
+      <app-cycles
+        #cyclesComponent
+        (selectedCoursesChange)="onSelectedCoursesChange($event)"
+      ></app-cycles>
+    </div>
+
+    <div class="right-panel">
+      <app-course-details
+        (courseRemoved)="onCourseRemoved($event)"
+      ></app-course-details>
+    </div>
   </div>
 </div>

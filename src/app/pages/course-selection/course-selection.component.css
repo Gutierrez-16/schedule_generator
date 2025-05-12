@@ -1,8 +1,32 @@
-.selection-container {
+.page-container {
   display: flex;
+  flex-direction: column;
   height: 100%;
-  gap: 24px;
   padding: 24px;
+}
+
+header {
+  margin-bottom: 24px;
+}
+
+.career-title {
+  background: linear-gradient(45deg, #7b1fa2, #9c27b0);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  color: white !important;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.content-container {
+  display: flex;
+  flex: 1;
+  gap: 24px;
+  min-height: 0;
 }
 
 .left-panel {
@@ -15,14 +39,13 @@
   min-width: 300px;
 }
 
-mat-divider {
-  margin: 0 24px;
-}
-
 @media (max-width: 1024px) {
-  .selection-container {
-    gap: 16px;
+  .page-container {
     padding: 16px;
+  }
+
+  .content-container {
+    gap: 16px;
   }
 
   .right-panel {
@@ -31,20 +54,22 @@ mat-divider {
 }
 
 @media (max-width: 768px) {
-  .selection-container {
-    flex-direction: column;
+  .page-container {
     padding: 12px;
+  }
+
+  .content-container {
+    flex-direction: column;
     gap: 12px;
   }
 
   .left-panel,
   .right-panel {
-    flex: 1;
+    flex: none;
     width: 100%;
-    min-width: 0;
   }
 
-  mat-divider {
+  mat-divider[vertical] {
     display: none;
   }
 }

@@ -22,6 +22,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AssignmentsService } from '../../core/services/assignments.service';
+import { AuthService } from '@app/services/auth.service';
 import {
   Career,
   Course,
@@ -49,6 +50,7 @@ import {
     MatTabsModule,
     MatProgressSpinnerModule,
   ],
+  providers: [AuthService], // Mover AuthService a providers
   templateUrl: './cycles.component.html',
   styleUrls: ['./cycles.component.css'],
 })
@@ -61,9 +63,11 @@ export class CyclesComponent implements OnInit {
   Array = Array;
   loading = true;
   error: string | null = null;
-  readonly defaultCareerId = 9;
 
-  constructor(private assignmentsService: AssignmentsService) {}
+  constructor(
+    private assignmentsService: AssignmentsService,
+    private authService: AuthService
+  ) {}
 
   @Output() selectedCoursesChange = new EventEmitter<Course[]>();
 
@@ -75,8 +79,15 @@ export class CyclesComponent implements OnInit {
     this.loading = true;
     this.error = null;
 
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) {
+      this.error = 'No se pudo obtener la información del usuario';
+      this.loading = false;
+      return;
+    }
+
     this.assignmentsService
-      .getAssignmentsByCareer(this.defaultCareerId)
+      .getAssignmentsByCareer(currentUser.career)
       .subscribe({
         next: (data) => {
           this.careerData = data;
