@@ -1,7 +1,7 @@
 <div class="schedule-container">
   <div class="header">
     <h1>Horario Generado</h1>
-    <div class="header-actions">
+    <div class="header-actions" *ngIf="allCourses.length">
       <app-export-buttons></app-export-buttons>
       <button
         mat-raised-button
@@ -15,7 +15,20 @@
     </div>
   </div>
 
-  <app-schedule [allCourses]="allCourses"></app-schedule>
+  <app-schedule
+    *ngIf="allCourses.length; else noCourses"
+    [allCourses]="allCourses"
+  ></app-schedule>
+
+  <ng-template #noCourses>
+    <div class="no-courses">
+      <mat-icon>warning</mat-icon>
+      <p>No hay cursos seleccionados</p>
+      <button mat-raised-button color="primary" routerLink="/course-selection">
+        Seleccionar Cursos
+      </button>
+    </div>
+  </ng-template>
 
   <div *ngIf="isLoading" class="loading-overlay">
     <mat-progress-spinner

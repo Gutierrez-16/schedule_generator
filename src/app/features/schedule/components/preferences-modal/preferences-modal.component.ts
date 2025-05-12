@@ -77,15 +77,6 @@ import { PreferencesRequest } from '@app/core/interfaces/schedule.interface';
             max="6"
           />
         </mat-form-field>
-
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Modalidades preferidas</mat-label>
-          <mat-select formControlName="preferredModalities" multiple>
-            <mat-option value="">Teoría</mat-option>
-            <mat-option value="">Práctica</mat-option>
-            <mat-option value="">Laboratorio</mat-option>
-          </mat-select>
-        </mat-form-field>
       </form>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
@@ -97,8 +88,11 @@ import { PreferencesRequest } from '@app/core/interfaces/schedule.interface';
   `,
   styles: [
     `
+      ::ng-deep .preferences-dialog {
+        z-index: 1002 !important;
+      }
+
       mat-dialog-content {
-        padding: 20px;
         min-width: 400px;
       }
       .full-width {
@@ -125,7 +119,7 @@ export class PreferencesModalComponent {
       preferredModalities: [[]],
       maxHoursPerDay: [8],
       minDaysPerWeek: [3],
-      maxDaysPerWeek: [6],
+      maxDaysPerWeek: [5],
       blockedHours: [[]],
     });
   }

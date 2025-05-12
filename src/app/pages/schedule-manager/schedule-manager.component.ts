@@ -43,10 +43,21 @@ export class ScheduleManagerComponent implements OnInit {
         (cycle: { courses: Course[] }) => cycle.courses
       );
       this.originalScheduleRequest = history.state?.originalRequest;
+    } else {
+      // Redirigir si no hay cursos
+      this.router.navigate(['/course-selection']);
+      this.snackBar.open('Primero debes seleccionar cursos', 'OK', {
+        duration: 3000,
+      });
     }
   }
 
   regenerateSchedule() {
+    if (!this.allCourses.length) {
+      this.router.navigate(['/course-selection']);
+      return;
+    }
+
     this.isLoading = true;
     this.schedulesService
       .generateSchedules(this.originalScheduleRequest)

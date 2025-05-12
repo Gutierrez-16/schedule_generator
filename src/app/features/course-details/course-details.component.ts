@@ -114,7 +114,11 @@ export class CourseDetailsComponent implements OnInit {
       return;
     }
 
-    const dialogRef = this.dialog.open(PreferencesModalComponent);
+    const dialogRef = this.dialog.open(PreferencesModalComponent, {
+      panelClass: 'preferences-dialog',
+      disableClose: false,
+      position: { top: '100px' },
+    });
     dialogRef.afterClosed().subscribe((preferences) => {
       if (preferences) {
         const request: GenerateSchedulesRequest = {

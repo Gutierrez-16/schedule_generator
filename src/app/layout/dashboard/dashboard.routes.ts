@@ -14,11 +14,11 @@ export const DASHBOARD_ROUTES: Routes = [
           ).then((m) => m.DashboardHomeComponent),
       },
       {
-        path: 'configuration',
+        path: 'course-selection',
         loadComponent: () =>
-          import('../../features/configuration/configuration.component').then(
-            (m) => m.ConfigurationComponent
-          ),
+          import(
+            '../../pages/course-selection/course-selection.component'
+          ).then((m) => m.CourseSelectionComponent),
       },
       {
         path: 'schedule-manager',
@@ -26,13 +26,6 @@ export const DASHBOARD_ROUTES: Routes = [
           import(
             '../../pages/schedule-manager/schedule-manager.component'
           ).then((m) => m.ScheduleManagerComponent),
-      },
-      {
-        path: 'course-selection',
-        loadComponent: () =>
-          import(
-            '../../pages/course-selection/course-selection.component'
-          ).then((m) => m.CourseSelectionComponent),
       },
     ],
   },
