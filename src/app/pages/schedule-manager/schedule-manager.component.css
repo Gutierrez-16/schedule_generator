@@ -1,5 +1,5 @@
 .schedule-manager-container {
-  height: 100%;
+  min-height: 100%;
   overflow: hidden;
   background: var(--background-primary);
   background-color: var(--background-primary);
@@ -14,14 +14,11 @@ mat-sidenav-container {
   width: 350px;
   background: #fff;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
 .main-content {
-  padding: 1rem;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -125,8 +122,90 @@ mat-divider {
 .options-footer {
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  margin-top: 2rem;
   padding: 1rem;
+}
+
+.no-schedule-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 300px;
+  color: var(--text-secondary);
+}
+
+.data-card {
+  margin-bottom: 20px;
+}
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  padding: 20px;
+}
+
+.course-card {
+  background: white;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.detail-section {
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.teacher-name {
+  font-weight: 500;
+  color: #2196f3;
+  margin-bottom: 8px;
+}
+
+.class-type {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.type-badge {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+.type-badge.t {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.type-badge.p {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.time,
+.day,
+.classroom {
+  font-size: 13px;
+  color: #666;
+}
+
+.classroom {
+  font-weight: 500;
 }
 
 @media (max-width: 1024px) {
@@ -141,4 +220,294 @@ mat-divider {
   .right-panel {
     display: none;
   }
+}
+
+.json-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.career-card {
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #7b1fa2, #9c27b0);
+  color: white;
+}
+
+.career-card mat-card-title,
+.career-card mat-card-subtitle {
+  color: white;
+}
+
+.details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-item {
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.teacher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1976d2;
+  margin-bottom: 8px;
+}
+
+.class-types {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.class-type {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.schedule-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  color: #666;
+  font-size: 13px;
+}
+
+.schedule-info mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.schedule-details {
+  margin-top: 2rem;
+  padding: 1rem;
+}
+
+.invalid-schedule {
+  background-color: #fff5f5;
+  border: 1px solid #ffcdd2;
+  border: 2px solid #ff5252 !important;
+}
+
+.type-badge.invalid {
+  background-color: #ffebee !important;
+  color: #d32f2f !important;
+  border: 1px solid #ef9a9a;
+}
+
+.error-icon {
+  font-size: 16px !important;
+  height: 16px !important;
+  width: 16px !important;
+  color: #d32f2f !important;
+  margin-left: 4px;
+}
+
+.invalid-text {
+  color: #d32f2f !important;
+}
+
+.invalid-text mat-icon {
+  color: #d32f2f !important;
+}
+
+.cycle-section {
+  margin-bottom: 2rem;
+}
+
+.cycle-title {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.schedule-container {
+  padding: 20px;
+  overflow: auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+  margin: 0;
+  color: var(--primary-color);
+  font-size: 24px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+  border: 1px solid #e0e0e0;
+  padding: 8px;
+}
+
+th {
+  background: #f5f5f5;
+  font-weight: 500;
+}
+
+.time-cell {
+  width: 80px;
+  text-align: center;
+  font-weight: 500;
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.schedule-cell {
+  border: 1px solid #e0e0e0;
+  padding: 8px;
+  vertical-align: top;
+  height: 80px;
+  min-width: 150px;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.class-info {
+  font-size: 0.9rem;
+  padding: 8px;
+}
+
+.subject {
+  font-weight: 500;
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-size: 0.9rem;
+}
+
+.type {
+  font-size: 0.8rem;
+  color: #666;
+  font-size: 12px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #666;
+  margin: 4px 0;
+}
+
+.teacher {
+  font-size: 0.8rem;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #666;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.room {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #1976d2;
+  font-size: 12px;
+  margin-top: 2px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #1976d2;
+}
+
+.header-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.header-info h1 {
+  margin: 0;
+  color: #1976d2;
+  font-size: 24px;
+}
+
+.export-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.export-buttons button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.schedule-table-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+}
+
+.warning-icon {
+  color: #ff5252;
+  font-size: 18px;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+.time {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 4px 0;
+}
+
+.invalid-class {
+  position: relative;
+}
+
+.invalid-class .class-info {
+  color: #d32f2f;
+}
+
+.invalid-class .error-icon {
+  color: #ff5252;
+  font-size: 18px;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+.error-icon {
+  color: #ff5252;
 }

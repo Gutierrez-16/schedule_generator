@@ -6,15 +6,15 @@ export type DayOfWeek =
   | 'Viernes'
   | 'Sábado';
 
-export type ClassTypeEnum = 'TEORIA' | 'PRACTICA' | 'LABORATORIO';
-
 export interface ClassType {
   assignmentDetailId: number;
   classroom: string;
-  classType: ClassTypeEnum;
+  classType: string;
   day: string;
   startTime: string; // Changed from Time to string for frontend
   endTime: string; // Changed from Time to string for frontend
+  value: boolean; // Added for checkbox value
+  message: string; // Added for checkbox message
 }
 
 export interface CourseDetail {
@@ -23,7 +23,6 @@ export interface CourseDetail {
 }
 
 export interface Course {
-  assignmentId?: number; // Make optional to support both old and new data
   courseId: string;
   course: string;
   credits: number;

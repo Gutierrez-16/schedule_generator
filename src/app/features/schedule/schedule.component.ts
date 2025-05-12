@@ -5,9 +5,10 @@ import { MatIconModule } from '@angular/material/icon';
 import {
   DayOfWeek,
   Course,
-  ClassTypeEnum,
   GenerateSchedulesRequest,
   PreferencesRequest,
+  CourseDetail,
+  ClassType,
 } from '@app/core/interfaces/schedule.interface';
 import { ExportButtonsComponent } from './components/export-buttons/export-buttons.component';
 import { SchedulesService } from '@app/core/services/schedules.service';
@@ -56,24 +57,20 @@ export class ScheduleComponent implements OnInit {
   constructor(private schedulesService: SchedulesService) {}
 
   ngOnInit() {
-    // Inicializar el horario vacío
-    this.courses = [];
+    console.log('Inicializando componente Schedule');
   }
 
-  @Input() set scheduleData(data: any[] | null) {
-    console.log('📅 Recibiendo datos del horario:', data);
+  @Input() set scheduleData(data: Cycle[] | null) {
+    console.log('📅 Recibiendo datos:', data);
     if (data && data.length > 0) {
-      // Reset courses array
-      this.courses = [];
-
-      // Map the courses from the input data
-      this.courses = data[0].courses.map((course: any) => ({
+      const coursesData = data[0].courses;
+      this.courses = coursesData.map((course) => ({
         courseId: String(course.courseId),
         course: course.course,
         credits: course.credits,
-        details: course.details.map((detail: any) => ({
+        details: course.details.map((detail) => ({
           teacher: detail.teacher,
-          classTypes: detail.classTypes.map((ct: any) => ({
+          classTypes: detail.classTypes.map((ct) => ({
             assignmentDetailId: ct.assignmentDetailId,
             classroom: ct.classroom,
             classType: ct.classType,
@@ -83,23 +80,30 @@ export class ScheduleComponent implements OnInit {
           })),
         })),
       }));
-      console.log('🎯 Cursos procesados para mostrar:', this.courses);
     }
   }
 
-  private mapClassType(type: string): string {
-    const typeMap: Record<string, string> = {
-      T: 'TEORIA',
-      P: 'PRACTICA',
-      L: 'LABORATORIO',
-    };
-    return typeMap[type] || type;
+  private processCourses(courses: Course[]): Course[] {
+    return courses.map((course) => ({
+      ...course,
+      courseId: String(course.courseId),
+      details: course.details.map((detail: CourseDetail) => ({
+        teacher: detail.teacher,
+        classTypes: detail.classTypes.map((ct: ClassType) => ({
+          assignmentDetailId: ct.assignmentDetailId,
+          classroom: ct.classroom,
+          classType: ct.classType,
+          day: ct.day,
+          startTime: this.formatTime(ct.startTime),
+          endTime: this.formatTime(ct.endTime),
+        })),
+      })),
+    }));
   }
 
   private formatTime(time: string): string {
     if (!time) return '';
-    // Remove seconds from time
-    return time.split(':').slice(0, 2).join(':');
+    return time.substring(0, 5);
   }
 
   private generateTimeSlots(): string[] {
@@ -123,15 +127,11 @@ export class ScheduleComponent implements OnInit {
   }
 
   getClass(day: string, time: string): CourseWithUI | null {
-    if (!this.courses || this.courses.length === 0) return null;
-
-    const currentTime = this.formatTime(time);
-    const course = this.courses.find((course) =>
-      course.details.some((detail) =>
-        detail.classTypes.some(
+    const course = this.courses.find((c) =>
+      c.details.some((d) =>
+        d.classTypes.some(
           (ct) =>
-            ct.day === day &&
-            this.isTimeInRange(currentTime, ct.startTime, ct.endTime)
+            ct.day === day && this.isTimeInRange(time, ct.startTime, ct.endTime)
         )
       )
     );
@@ -141,8 +141,7 @@ export class ScheduleComponent implements OnInit {
     const detail = course.details.find((d) =>
       d.classTypes.some(
         (ct) =>
-          ct.day === day &&
-          this.isTimeInRange(currentTime, ct.startTime, ct.endTime)
+          ct.day === day && this.isTimeInRange(time, ct.startTime, ct.endTime)
       )
     );
 
@@ -150,21 +149,14 @@ export class ScheduleComponent implements OnInit {
 
     const classType = detail.classTypes.find(
       (ct) =>
-        ct.day === day &&
-        this.isTimeInRange(currentTime, ct.startTime, ct.endTime)
+        ct.day === day && this.isTimeInRange(time, ct.startTime, ct.endTime)
     );
 
     if (!classType) return null;
 
-    const colorMap: Record<string, string> = {
-      T: '#4fc3f7', // Azul para teoría
-      P: '#81c784', // Verde para práctica
-      L: '#ff8a65', // Naranja para laboratorio
-    };
-
     return {
       ...course,
-      color: colorMap[classType.classType] || '#4fc3f7',
+      color: classType.classType,
       subject: `${course.course} (${classType.classType})`,
       professor: detail.teacher,
       classroom: classType.classroom,
@@ -174,11 +166,10 @@ export class ScheduleComponent implements OnInit {
   }
 
   private isTimeInRange(current: string, start: string, end: string): boolean {
-    return current >= start && current < end;
-  }
-
-  private timeInRange(time: string, start: string, end: string): boolean {
-    return time >= start && time < end;
+    const currentMinutes = this.timeToMinutes(current);
+    const startMinutes = this.timeToMinutes(start);
+    const endMinutes = this.timeToMinutes(end);
+    return currentMinutes >= startMinutes && currentMinutes < endMinutes;
   }
 
   shouldShowCell(day: string, time: string): boolean {
@@ -211,6 +202,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   private timeToMinutes(time: string): number {
+    if (!time) return 0;
     const [hours, minutes] = time.split(':').map(Number);
     return hours * 60 + minutes;
   }
@@ -220,7 +212,7 @@ export class ScheduleComponent implements OnInit {
       avoidDays: [],
       avoidStartHour: '07:00',
       preferredTeachers: [],
-      preferredModalities: ['TEORIA', 'PRACTICA'],
+      preferredModalities: [],
       maxHoursPerDay: 8,
       minDaysPerWeek: 3,
       maxDaysPerWeek: 6,
@@ -255,7 +247,7 @@ export class ScheduleComponent implements OnInit {
         existingCourse.details[0].classTypes.push({
           assignmentDetailId: assignment.assignmentDetailId,
           classroom: assignment.classroomName,
-          classType: assignment.classType as ClassTypeEnum,
+          classType: assignment.classType,
           day: assignment.day,
           startTime: assignment.startTime,
           endTime: assignment.endTime,
@@ -272,7 +264,7 @@ export class ScheduleComponent implements OnInit {
                 {
                   assignmentDetailId: assignment.assignmentDetailId,
                   classroom: assignment.classroomName,
-                  classType: assignment.classType as ClassTypeEnum,
+                  classType: assignment.classType,
                   day: assignment.day,
                   startTime: assignment.startTime,
                   endTime: assignment.endTime,

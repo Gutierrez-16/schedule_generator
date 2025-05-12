@@ -6,8 +6,6 @@ export type DayOfWeek =
   | 'Viernes'
   | 'Sábado';
 
-export type ClassTypeEnum = 'TEORIA' | 'PRACTICA' | 'LABORATORIO';
-
 export interface BlockedHourRequest {
   day: string;
   start: string;
@@ -41,7 +39,7 @@ export interface ApiResponse<T> {
 export interface ClassType {
   assignmentDetailId: number;
   classroom: string;
-  classType: ClassTypeEnum;
+  classType: string;
   day: string;
   startTime: string;
   endTime: string;

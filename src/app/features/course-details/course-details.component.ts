@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -30,6 +30,11 @@ import { SchedulesService } from 'src/app/core/services/schedules.service';
   styleUrls: ['./course-details.component.css'],
 })
 export class CourseDetailsComponent {
+  private uniqueCoursesMap = new Map<string, Course>();
+  selectedCourses: Course[] = [];
+  maxCredits = 21;
+  totalCredits = 0;
+
   constructor(
     private snackBar: MatSnackBar,
     private schedulesService: SchedulesService,
@@ -39,19 +44,31 @@ export class CourseDetailsComponent {
 
   @Output() courseRemoved = new EventEmitter<string>(); // Changed from number to string
 
-  maxCredits = 21;
-  selectedCourses: Course[] = [];
-  totalCredits = 0;
-
   // ID de usuario estático por ahora (puede venir de AuthService en el futuro)
   userId = 1;
 
   updateSelectedCourses(courses: Course[]) {
-    this.selectedCourses = courses;
-    this.totalCredits = courses.reduce(
+    // Limpiar el mapa actual
+    this.uniqueCoursesMap.clear();
+
+    // Actualizar el mapa con los nuevos cursos, evitando duplicados
+    courses.forEach((course) => {
+      if (!this.uniqueCoursesMap.has(course.courseId)) {
+        this.uniqueCoursesMap.set(course.courseId, course);
+      }
+    });
+
+    // Convertir el mapa a array para selectedCourses
+    this.selectedCourses = Array.from(this.uniqueCoursesMap.values());
+
+    // Calcular créditos totales
+    this.totalCredits = this.selectedCourses.reduce(
       (sum, course) => sum + course.credits,
       0
     );
+
+    console.log('📚 Cursos actualizados:', this.selectedCourses);
+    console.log('💯 Total créditos:', this.totalCredits);
   }
 
   canAddCourse(course: Course): boolean {
@@ -59,14 +76,15 @@ export class CourseDetailsComponent {
   }
 
   removeCourse(course: Course) {
-    this.selectedCourses = this.selectedCourses.filter(
-      (c) => c.courseId !== course.courseId
-    );
+    this.uniqueCoursesMap.delete(course.courseId);
+    this.selectedCourses = Array.from(this.uniqueCoursesMap.values());
     this.totalCredits = this.selectedCourses.reduce(
       (sum, c) => sum + c.credits,
       0
     );
     this.courseRemoved.emit(course.courseId); // courseId is now string
+    console.log('🗑️ Curso removido:', course.courseId);
+    console.log('📚 Cursos restantes:', this.selectedCourses);
   }
 
   enrollCourses() {
@@ -82,33 +100,48 @@ export class CourseDetailsComponent {
 
     dialogRef.afterClosed().subscribe((preferences) => {
       if (preferences) {
+        console.log('Selected courses:', this.selectedCourses);
+
         const request: GenerateSchedulesRequest = {
-          careerId: 1,
-          preferences: preferences,
+          careerId: 9,
+          preferences: {
+            avoidDays: [],
+            avoidStartHour: '07:00',
+            preferredTeachers: [],
+            preferredModalities: [], // Tipos de clase simplificados
+            maxHoursPerDay: 8,
+            minDaysPerWeek: 3,
+            maxDaysPerWeek: 6,
+            blockedHours: [],
+            ...preferences,
+          },
           courseIds: this.selectedCourses.map((course) =>
             Number(course.courseId)
           ),
         };
 
+        console.log('Request to be sent:', JSON.stringify(request, null, 2));
+
         this.schedulesService.generateSchedules(request).subscribe({
           next: (response) => {
+            console.log('✅ Success response:', response);
             if (response.success) {
-              // Primero navegamos al schedule manager
+              this.schedulesService.setScheduleData(response.data);
               this.router.navigate(['/schedule-manager'], {
                 state: { scheduleData: response.data },
               });
-
-              // Después forzamos la visualización del horario
-              setTimeout(() => {
-                localStorage.setItem('showSchedule', 'true');
-                window.location.reload();
-              }, 100);
             }
           },
           error: (err) => {
-            console.error('Error al generar horario:', err);
-            this.snackBar.open('Error al generar el horario', 'OK', {
-              duration: 3000,
+            console.error('❌ Error response:', err);
+            let errorMessage = 'Error al generar el horario';
+
+            if (err.error?.message) {
+              errorMessage = `Error: ${err.error.message}`;
+            }
+
+            this.snackBar.open(errorMessage, 'Cerrar', {
+              duration: 5000,
               panelClass: ['error-snackbar'],
             });
           },

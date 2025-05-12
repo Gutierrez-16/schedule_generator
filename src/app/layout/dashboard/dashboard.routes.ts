@@ -8,19 +8,32 @@ export const DASHBOARD_ROUTES: Routes = [
     children: [
       {
         path: '',
-        loadComponent: () => import('../../pages/home/dashboard-home/dashboard-home.component')
-          .then(m => m.DashboardHomeComponent)
+        loadComponent: () =>
+          import(
+            '../../pages/home/dashboard-home/dashboard-home.component'
+          ).then((m) => m.DashboardHomeComponent),
       },
       {
         path: 'configuration',
-        loadComponent: () => import('../../features/configuration/configuration.component')
-          .then(m => m.ConfigurationComponent)
+        loadComponent: () =>
+          import('../../features/configuration/configuration.component').then(
+            (m) => m.ConfigurationComponent
+          ),
       },
       {
         path: 'schedule-manager',
-        loadComponent: () => import('../../pages/schedule-manager/schedule-manager.component')
-          .then(m => m.ScheduleManagerComponent)
+        loadComponent: () =>
+          import(
+            '../../pages/schedule-manager/schedule-manager.component'
+          ).then((m) => m.ScheduleManagerComponent),
       },
-    ]
-  }
+      {
+        path: 'course-selection',
+        loadComponent: () =>
+          import(
+            '../../pages/course-selection/course-selection.component'
+          ).then((m) => m.CourseSelectionComponent),
+      },
+    ],
+  },
 ];

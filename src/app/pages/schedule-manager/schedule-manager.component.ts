@@ -1,121 +1,203 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ScheduleComponent } from '../../features/schedule/schedule.component';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { CourseSelectionComponent } from '../course-selection/course-selection.component';
-import { Router } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ExportButtonsComponent } from '@app/features/schedule/components/export-buttons/export-buttons.component';
 import {
-  ScheduleData,
-  ScheduleOption,
-} from '@app/features/schedule/interfaces/schedule-options.interface';
-import { Course } from '@app/features/schedule/interfaces/schedule.interface';
+  DayOfWeek,
+  Course,
+} from '@app/features/schedule/interfaces/schedule.interface';
+
+interface ScheduleInfo {
+  course: string;
+  classType: string;
+  teacher: string;
+  classroom: string;
+  startTime: string;
+  endTime: string;
+  value: boolean;
+  message: string;
+}
 
 @Component({
   selector: 'app-schedule-manager',
   standalone: true,
   imports: [
     CommonModule,
-    ScheduleComponent,
-    MatDividerModule,
-    MatTabsModule,
+    MatButtonModule,
     MatIconModule,
-    CourseSelectionComponent,
+    MatTooltipModule,
+    ExportButtonsComponent,
   ],
-  templateUrl: './schedule-manager.component.html',
+  template: `
+    <div class="schedule-container">
+      <div class="header">
+        <h1>Horario</h1>
+        <app-export-buttons></app-export-buttons>
+      </div>
+      <div class="table-container">
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th>Hora</th>
+              <th *ngFor="let day of days">{{ day }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let time of timeSlots">
+              <td class="time-cell">{{ time }}</td>
+              <td
+                *ngFor="let day of days"
+                class="schedule-cell"
+                [ngClass]="{ 'invalid-class': !isValidClass(day, time) }"
+                [style.background-color]="getClassColor(day, time)"
+                [attr.rowspan]="getClassSpan(day, time)"
+              >
+                <ng-container *ngIf="getClassInfo(day, time) as info">
+                  <div class="class-info" [class.invalid-class]="!info.value">
+                    <div class="subject">{{ info.course }}</div>
+                    <div class="type">
+                      {{ info.classType }}
+                      <mat-icon
+                        *ngIf="!info.value"
+                        class="error-icon"
+                        matTooltip="{{ info.message }}"
+                      >
+                        warning
+                      </mat-icon>
+                    </div>
+                    <div class="time">
+                      {{ info.startTime | slice : 0 : 5 }} -
+                      {{ info.endTime | slice : 0 : 5 }}
+                    </div>
+                    <div class="teacher">{{ info.teacher }}</div>
+                    <div class="room">{{ info.classroom }}</div>
+                  </div>
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `,
   styleUrls: ['./schedule-manager.component.css'],
 })
 export class ScheduleManagerComponent implements OnInit {
-  selectedTab = 0;
-  scheduleOptions: ScheduleOption[] = [];
-  currentOption = 0;
-
-  constructor(private router: Router) {}
+  days: DayOfWeek[] = [
+    'Lunes',
+    'Martes',
+    'Miércoles',
+    'Jueves',
+    'Viernes',
+    'Sábado',
+  ];
+  timeSlots: string[] = this.generateTimeSlots();
+  allCourses: Course[] = [];
 
   ngOnInit() {
-    if (localStorage.getItem('showSchedule')) {
-      this.selectedTab = 0;
-      localStorage.removeItem('showSchedule');
-    }
-
-    if (history.state?.scheduleData) {
-      this.selectedTab = 0;
-      const data = history.state.scheduleData;
-
-      // Crear variaciones del horario
-      this.scheduleOptions = Array(3)
-        .fill(null)
-        .map((_, index) => ({
-          scheduleData: {
-            career: data.career,
-            cycles: [
-              {
-                cycle: data.cycles[0].cycle,
-                courses:
-                  index === 0
-                    ? data.cycles[0].courses
-                    : this.shuffleCourseSchedules(data.cycles[0].courses),
-              },
-            ],
-          },
-          optionNumber: index + 1,
-        }));
+    const data = history.state?.scheduleData;
+    if (data) {
+      this.allCourses = data.cycles.flatMap(
+        (cycle: { courses: Course[] }) => cycle.courses
+      );
     }
   }
 
-  private createScheduleVariations(originalData: ScheduleData): ScheduleData[] {
-    const variations: ScheduleData[] = [];
-
-    // First variation is original
-    variations.push(originalData);
-
-    // Create 2 more variations
-    for (let i = 0; i < 2; i++) {
-      variations.push({
-        career: originalData.career,
-        cycles: originalData.cycles.map((cycle) => ({
-          cycle: cycle.cycle,
-          courses: this.shuffleCourseSchedules(cycle.courses),
-        })),
-      });
+  getClassInfo(day: string, time: string): ScheduleInfo | null {
+    for (const course of this.allCourses) {
+      for (const detail of course.details) {
+        for (const type of detail.classTypes) {
+          if (
+            type.day === day &&
+            this.isTimeInRange(time, type.startTime, type.endTime)
+          ) {
+            return {
+              course: course.course,
+              classType: type.classType,
+              teacher: detail.teacher,
+              classroom: type.classroom,
+              startTime: type.startTime,
+              endTime: type.endTime,
+              value: type.value,
+              message: type.message,
+            };
+          }
+        }
+      }
     }
-
-    return variations;
+    return null;
   }
 
-  private shuffleCourseSchedules(courses: Course[]): Course[] {
-    return courses.map((course) => ({
-      ...course,
-      details: course.details.map((detail) => ({
-        ...detail,
-        classTypes: [...detail.classTypes].sort(() => Math.random() - 0.5),
-      })),
-    }));
+  getClassColor(day: string, time: string): string {
+    const info = this.getClassInfo(day, time);
+    if (!info) return 'transparent';
+    if (!info.value) return '#ffebee'; // Color rojo claro para clases inválidas
+    return info.classType === 'T' ? '#e3f2fd' : '#e8f5e9';
   }
 
-  private shuffleArray<T>(array: T[]): T[] {
-    const newArray = [...array];
-    for (let i = newArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  isValidSchedule(day: string, time: string): boolean {
+    const info = this.getClassInfo(day, time);
+    return info ? info.value : true;
+  }
+
+  getClassSpan(day: string, time: string): number {
+    const info = this.getClassInfo(day, time);
+    if (!info) return 1;
+
+    const startMinutes = this.timeToMinutes(info.startTime);
+    const endMinutes = this.timeToMinutes(info.endTime);
+    return Math.ceil((endMinutes - startMinutes) / 45);
+  }
+
+  private timeToMinutes(time: string): number {
+    const [hours, minutes] = time.split(':').map(Number);
+    return hours * 60 + minutes;
+  }
+
+  private isTimeInRange(
+    slotTime: string,
+    startTime: string,
+    endTime: string
+  ): boolean {
+    const slot = this.timeToMinutes(slotTime);
+    const start = this.timeToMinutes(startTime.slice(0, 5));
+    const end = this.timeToMinutes(endTime.slice(0, 5));
+    return slot >= start && slot < end;
+  }
+
+  private generateTimeSlots(): string[] {
+    const slots: string[] = [];
+    let hour = 7;
+    let minutes = 0;
+    while (hour < 23) {
+      slots.push(
+        `${hour.toString().padStart(2, '0')}:${minutes
+          .toString()
+          .padStart(2, '0')}`
+      );
+      minutes += 45;
+      if (minutes >= 60) {
+        hour += Math.floor(minutes / 60);
+        minutes = minutes % 60;
+      }
     }
-    return newArray;
+    return slots;
   }
 
-  regenerateSchedule() {
-    this.selectedTab = 1; // Switch back to course selection
+  exportToPDF() {
+    console.log('Exportando a PDF...');
+    // Implementar exportación a PDF
   }
 
-  nextOption() {
-    if (this.currentOption < this.scheduleOptions.length - 1) {
-      this.currentOption++;
-    }
+  exportToExcel() {
+    console.log('Exportando a Excel...');
+    // Implementar exportación a Excel
   }
 
-  previousOption() {
-    if (this.currentOption > 0) {
-      this.currentOption--;
-    }
+  isValidClass(day: string, time: string): boolean {
+    const info = this.getClassInfo(day, time);
+    return info ? info.value : true;
   }
 }

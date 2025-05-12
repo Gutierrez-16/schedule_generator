@@ -81,9 +81,9 @@ import { PreferencesRequest } from '@app/core/interfaces/schedule.interface';
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Modalidades preferidas</mat-label>
           <mat-select formControlName="preferredModalities" multiple>
-            <mat-option value="TEORIA">Teoría</mat-option>
-            <mat-option value="PRACTICA">Práctica</mat-option>
-            <mat-option value="LABORATORIO">Laboratorio</mat-option>
+            <mat-option value="">Teoría</mat-option>
+            <mat-option value="">Práctica</mat-option>
+            <mat-option value="">Laboratorio</mat-option>
           </mat-select>
         </mat-form-field>
       </form>
@@ -122,7 +122,7 @@ export class PreferencesModalComponent {
       avoidDays: [[]],
       avoidStartHour: ['07:00'],
       preferredTeachers: [[]],
-      preferredModalities: [['TEORIA', 'PRACTICA']],
+      preferredModalities: [[]],
       maxHoursPerDay: [8],
       minDaysPerWeek: [3],
       maxDaysPerWeek: [6],
