@@ -18,22 +18,10 @@ export class CourseSelectionComponent {
 
   careerName: string = '';
 
-  constructor(private authService: AuthService) {
-    const currentUser = this.authService.getCurrentUser();
-    const careerMap: { [key: number]: string } = {
-      1: 'Ingeniería de Sistemas',
-      2: 'Ingeniería Civil',
-      3: 'Ingeniería Industrial',
-      4: 'Arquitectura',
-      5: 'Medicina',
-      6: 'Derecho',
-      7: 'Psicología',
-      8: 'Administración',
-      9: 'Contabilidad',
-    };
+  constructor(private authService: AuthService) {}
 
-    this.careerName =
-      careerMap[currentUser?.career || 0] || 'Carrera no especificada';
+  updateCareerName(careerName: string) {
+    this.careerName = careerName;
   }
 
   onSelectedCoursesChange(courses: Course[]) {

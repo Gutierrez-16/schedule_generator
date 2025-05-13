@@ -28,7 +28,7 @@ import { AuthService } from '@app/services/auth.service';
     MatChipsModule,
     MatProgressSpinnerModule,
   ],
-  providers: [AuthService], // Agregar AuthService a providers
+  providers: [AuthService],
   templateUrl: './course-details.component.html',
   styleUrls: ['./course-details.component.css'],
 })
@@ -39,33 +39,16 @@ export class CourseDetailsComponent implements OnInit {
   totalCredits = 0;
   private originalRequest: any;
   isLoading = false;
-  careerName: string = '';
 
   constructor(
     private snackBar: MatSnackBar,
     private schedulesService: SchedulesService,
     private dialog: MatDialog,
     private router: Router,
-    private authService: AuthService // Agregar AuthService
+    private authService: AuthService
   ) {
     const currentUser = this.authService.getCurrentUser();
     this.maxCredits = currentUser?.credits || 21;
-
-    // Asignar nombre de carrera basado en el ID
-    const careerMap: { [key: number]: string } = {
-      1: 'Ingeniería de Sistemas',
-      2: 'Ingeniería Civil',
-      3: 'Ingeniería Industrial',
-      4: 'Arquitectura',
-      5: 'Medicina',
-      6: 'Derecho',
-      7: 'Psicología',
-      8: 'Administración',
-      9: 'Contabilidad',
-    };
-
-    this.careerName =
-      careerMap[currentUser?.career || 0] || 'Carrera no especificada';
   }
 
   @Output() courseRemoved = new EventEmitter<string>();

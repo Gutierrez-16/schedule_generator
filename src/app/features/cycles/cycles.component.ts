@@ -70,6 +70,7 @@ export class CyclesComponent implements OnInit {
   ) {}
 
   @Output() selectedCoursesChange = new EventEmitter<Course[]>();
+  @Output() careerNameChange = new EventEmitter<string>();
 
   ngOnInit() {
     this.loadCareerData();
@@ -92,6 +93,8 @@ export class CyclesComponent implements OnInit {
         next: (data) => {
           this.careerData = data;
           this.cycles = data.cycles;
+          // Emitir el nombre de la carrera al componente padre
+          this.careerNameChange.emit(this.careerData.career);
           this.loading = false;
           console.log(`Carrera cargada: ${this.careerData.career}`);
           console.log(`Total de ciclos: ${this.cycles.length}`);
