@@ -1,6 +1,35 @@
 # ScheduleGenerator
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.0.
+A powerful Angular application for generating and managing schedules efficiently.
+
+## Features
+
+- Easy schedule creation and management
+- Drag-and-drop interface
+- Customizable time slots
+- Export to multiple formats
+- Responsive design
+
+## Prerequisites
+
+- Node.js (version 18 or higher)
+- npm (version 9 or higher)
+- Angular CLI (version 19.0.0)
+
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/schedule_generator.git
+cd schedule_generator
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
 
 ## Development server
 
@@ -34,7 +63,13 @@ To build the project run:
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+The build artifacts will be stored in the `dist/` directory.
+
+### Build options
+
+- `ng build --prod` - for production build
+- `ng build --watch` - for development with auto-rebuild
+- `ng build --configuration=staging` - for staging environment
 
 ## Running unit tests
 
@@ -53,6 +88,18 @@ ng e2e
 ```
 
 Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Additional Resources
 
