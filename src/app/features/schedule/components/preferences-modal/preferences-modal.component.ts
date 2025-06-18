@@ -40,43 +40,46 @@ import { PreferencesRequest } from '@app/core/interfaces/schedule.interface';
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Hora de inicio a evitar</mat-label>
-          <input matInput type="time" formControlName="avoidStartHour" />
-        </mat-form-field>
+        <!-- Estos campos estarán ocultos todo el tiempo -->
+        <ng-container *ngIf="false">
+          <mat-form-field appearance="fill">
+            <mat-label>Hora de inicio a evitar</mat-label>
+            <input matInput type="time" formControlName="avoidStartHour" />
+          </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Máximo horas por día</mat-label>
-          <input
-            matInput
-            type="number"
-            formControlName="maxHoursPerDay"
-            min="1"
-            max="12"
-          />
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Máximo horas por día</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="maxHoursPerDay"
+              min="1"
+              max="12"
+            />
+          </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Mínimo días por semana</mat-label>
-          <input
-            matInput
-            type="number"
-            formControlName="minDaysPerWeek"
-            min="1"
-            max="6"
-          />
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Mínimo días por semana</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="minDaysPerWeek"
+              min="1"
+              max="6"
+            />
+          </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Máximo días por semana</mat-label>
-          <input
-            matInput
-            type="number"
-            formControlName="maxDaysPerWeek"
-            min="1"
-            max="6"
-          />
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Máximo días por semana</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="maxDaysPerWeek"
+              min="1"
+              max="6"
+            />
+          </mat-form-field>
+        </ng-container>
       </form>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
