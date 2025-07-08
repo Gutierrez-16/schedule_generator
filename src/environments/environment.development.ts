@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://familiar-xenia-schedulegenerator23-69dbceea.koyeb.app/api/v1/users',
-  authApiUrl: 'https://familiar-xenia-schedulegenerator23-69dbceea.koyeb.app/api/v1/auth', // Corregir ruta
-  baseUrl: 'https://familiar-xenia-schedulegenerator23-69dbceea.koyeb.app',
+  apiUrl: 'https://schedule-generator-backend-g3c7.onrender.com/api/v1/users',
+  authApiUrl: 'https://schedule-generator-backend-g3c7.onrender.com/api/v1/auth', // Corregir ruta
+  baseUrl: 'https://schedule-generator-backend-g3c7.onrender.com',
 };
